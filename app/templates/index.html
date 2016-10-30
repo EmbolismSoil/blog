@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
     <meta charset="utf-8">
     <title>Bootstrap 实例 - 默认的导航栏</title>
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/blog.css">
+    <link rel="stylesheet" href="/static/blog.css?version=1.2.6">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/static/scrollspy.js"></script>
@@ -28,7 +31,7 @@
 </head>
 <body>
 <div hidden class="container-fluid" style="margin: 0; padding: 0;" id="header-container">
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top" id="header-static">
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top is-fixed is-visible" id="header-static">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -55,7 +58,7 @@
         </div>
         <!-- /.container -->
     </nav>
-    <header class="intro-header" style="background:#1CA883">
+    <header class="intro-header" style="background:#1CA883", id="main-header">
         <div class="site-heading">
             <h1>脑子没有想法</h1>
             <span class="subheading">但如果我想，我就可以</span>
@@ -80,20 +83,31 @@
     })
 
     scroll = function (e) {
-            if (e.wheelDelta > 0) {
-                if (!$('#header-static').hasClass('is-fixed'))
-                    $('#header-static').addClass('is-fixed');
-                if (!$('#header-static').hasClass('is-visible'))
-                    $('#header-static').addClass('is-visible');
-            }
+        var pos = $(document).scrollTop();
+        var h = $('#main-header').height();
 
-          if (e.wheelDelta < 0) {
-                if ($('#header-static').hasClass('is-visible'))
-                    $('#header-static').removeClass('is-visible');
+        if (pos <= h){
+            if (!$('#header-static').hasClass('navbar-fixed-top')){
+                $('#header-static').addClass('navbar-fixed-top');
             }
+        }else{
+            if ($('#header-static').hasClass('navbar-fixed-top')){
+                $('#header-static').removeClass('navbar-fixed-top');
+            }
+        }
+
+        if (e.wheelDelta > 0) {
+            if (!$('#header-static').hasClass('is-visible'))
+                $('#header-static').addClass('is-visible');
+        }
+
+        if (e.wheelDelta < 0) {
+            if ($('#header-static').hasClass('is-visible'))
+                $('#header-static').removeClass('is-visible');
+        }
     };
 
-    document.onmousewheel=scroll;
+    document.onmousewheel = scroll;
 
 
     function titleEnter(title) {

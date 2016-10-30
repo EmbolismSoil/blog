@@ -1,0 +1,18 @@
+<div class="post-preview"  style="margin: 0% 18%">
+        <a href="{{ url_for('main.view_article', name=article.name) }}">
+            <h2 class="post-title" onmouseover="titleEnter(this)" onmouseout="titleLeave(this)" style="display: block">
+                {{ article.title }}
+            </h2>
+            <hr/>
+        </a>
+        <h4 class="post-subtitle">
+            {{ article.subtitle }}
+        </h4>
+
+        <div class="post-content-preview">
+            Maven有几个核心的概念，包括坐标、依赖、仓库，这几个概念比较容易理解，Maven另外两个重要的概念是生命周期和插件，你在工作中可能会经常使用maven clean install这样的命令来打包项目，但是你有没有仔细想过这两个命令会执行哪些操作。
+        </div>
+    <p class="post-meta">
+        {{ article.meta }}
+    </p>
+</div>

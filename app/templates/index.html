@@ -61,7 +61,7 @@
                     <li><a href="#" onclick="onClick()">LEEK博客</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">C/C++</a></li>
+                    <li><a href="https://www.baidu.com">C/C++</a></li>
                     <li><a href="#">PYTHON</a></li>
                     <li><a href="#">LINUX</a></li>
                     <li><a href="#">JAVA</a></li>
@@ -70,7 +70,9 @@
         </div>
         <!-- /.container -->
     </nav>
-    <div id="myCarousel" class="carousel slide" data-wrap="false">
+</div>
+
+<div id="myCarousel" class="carousel slide" data-wrap="false">
         <!-- 轮播（Carousel）项目 -->
         <div class="carousel-inner">
             <div class="item active">
@@ -102,21 +104,19 @@
             </div>
         </div>
     </div>
-</div>
 
 <script>
     // 停止轮播
     $("#myCarousel").carousel('pause');
+    $("#header-container").fadeIn(500, function () {
+        $("#article-container").fadeIn(500);
+    })
 
     for (var i = 0; i < 10; ++i) {
         $.get('/post-preview', function (data, status) {
             $("#article-container").append(data);
         });
     }
-
-    $("#article-container").fadeIn(500, function () {
-        $("#header-container").fadeIn(500);
-    })
 
     scroll = function (e) {
         var pos = $(document).scrollTop();
@@ -163,9 +163,20 @@
 
         $('#article-view').load(url);
         $("#myCarousel").carousel('next');
-        document.onmousewheel = function () {}
         $('#header-static').addClass('navbar-fixed-top');
         $('#header-static').addClass('is-visible');
+        document.onmousewheel = function (e) {
+
+            var pos = $(document).scrollTop();
+            var h = $('#header-static').height();
+            if (pos <= h){
+                $('#header-static').fadeIn(500);
+            }
+
+            if (e.wheelDelta < 0) {
+                $('#header-static').hide();
+            }
+        };
     }
     
     function onClick() {

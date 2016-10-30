@@ -1,5 +1,9 @@
 <div class="post-preview"  style="margin: 0% 18%">
-        <a href="{{ url_for('main.view_article', name=article.name) }}">
+    {% if article.img_url %}
+        <a  onclick="clickPreView('{{ url_for("main.view_article", name=article.name) }}', '{{ article.img_url }}')">
+    {% else %}
+        <a  onclick="clickPreView('{{ url_for("main.view_article", name=article.name) }}', '')">
+    {% endif %}
             <h2 class="post-title" onmouseover="titleEnter(this)" onmouseout="titleLeave(this)" style="display: block">
                 {{ article.title }}
             </h2>

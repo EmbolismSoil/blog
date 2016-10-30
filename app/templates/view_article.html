@@ -28,17 +28,6 @@
 		<script>		
 			var jQuery = Zepto;  // 为了避免修改flowChart.js和sequence-diagram.js的源码，所以使用Zepto.js时想支持flowChart/sequenceDiagram就得加上这一句
 		</script> -->
-        <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="/static/marked.min.js"></script>
-        <script src="/static/prettify.min.js"></script>
-        
-        <script src="/static/raphael.min.js"></script>
-        <script src="/static/underscore.min.js"></script>
-        <script src="/static/sequence-diagram.min.js"></script>
-        <script src="/static/flowchart.min.js"></script>
-        <script src="/static/jquery.flowchart.min.js"></script>
-
-        <script src="/static/editormd.js"></script>
         <script type="text/javascript">
             $(function() {
                 $.get("/static/markdown/{{ name }}", function(markdown) {

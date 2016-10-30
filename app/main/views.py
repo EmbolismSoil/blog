@@ -67,6 +67,7 @@ def edit_profile_admin(id):
 @main.route('/post-preview', methods=['GET'])
 def get_post_preview():
     md = Markdown('app/static/markdown/effective_python.md')
+    md.img_url = '/static/post-1.jpg'
     return render_template('preview.html', article=md)
 
 

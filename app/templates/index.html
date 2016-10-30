@@ -8,9 +8,21 @@
     <title>脑子里没想法</title>
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/blog.css?version=1.2.6">
+    <link rel="stylesheet" href="/static/editormd.preview.css" />
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/static/scrollspy.js"></script>
+    <script src="/static/marked.min.js"></script>
+    <script src="/static/prettify.min.js"></script>
+
+    <script src="/static/raphael.min.js"></script>
+    <script src="/static/underscore.min.js"></script>
+    <script src="/static/sequence-diagram.min.js"></script>
+    <script src="/static/flowchart.min.js"></script>
+    <script src="/static/jquery.flowchart.min.js"></script>
+
+    <script src="/static/editormd.js"></script>
+
     <style>
         hr {
             width: 0px;
@@ -31,59 +43,80 @@
 </head>
 <body>
 <div hidden class="container-fluid" style="margin: 0; padding: 0;" id="header-container">
-    <div id="top-view">
-        <nav class="navbar navbar-default navbar-custom navbar-fixed-top is-fixed is-visible" id="header-static">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target="#example-navbar-collapse">
-                        <span class="sr-only">切换导航</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse" id="example-navbar-collapse">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li><a href="#" onclick="onClick()">LEEK博客</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">C/C++</a></li>
-                        <li><a href="#">PYTHON</a></li>
-                        <li><a href="#">LINUX</a></li>
-                        <li><a href="#">JAVA</a></li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top is-fixed is-visible" id="header-static">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#example-navbar-collapse">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-            <!-- /.container -->
-        </nav>
-        <header class="intro-header" style="background:#1CA883", id="main-header">
-            <div class="site-heading">
-                <h1>脑子没有想法</h1>
-                <span class="subheading">但如果我想，我就可以</span>
+            <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="#" onclick="onClick()">LEEK博客</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://www.baidu.com">C/C++</a></li>
+                    <li><a href="#">PYTHON</a></li>
+                    <li><a href="#">LINUX</a></li>
+                    <li><a href="#">JAVA</a></li>
+                </ul>
             </div>
-        </header>
-    </div>
-
-    <div hidden id="article-container">
-        <div id="post-preview-col">
-
         </div>
-    </div>
+        <!-- /.container -->
+    </nav>
 </div>
 
+<div id="myCarousel" class="carousel slide" data-wrap="false">
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <header class="intro-header" style="background-image: url(/static/home-bg.jpg)", id="main-header">
+                    <div class="site-heading">
+                        <h1>脑子没有想法</h1>
+                        <span class="subheading">但如果我想，我就可以</span>
+                    </div>
+                </header>
+                <div id="top-view">
+                    <div hidden id="article-container">
+                        <div id="post-preview-col">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item">
+                <header class="intro-header"  id="article-img">
+                    <div class="site-heading">
+                        <h1></h1>
+                        <span class="subheading"></span>
+                    </div>
+                </header>
+                <div id="article-view">
+
+                </div>>
+            </div>
+        </div>
+    </div>
+
 <script>
+    // 停止轮播
+    $("#myCarousel").carousel('pause');
+    $("#header-container").fadeIn(500, function () {
+        $("#article-container").fadeIn(500);
+    })
+
     for (var i = 0; i < 10; ++i) {
         $.get('/post-preview', function (data, status) {
             $("#article-container").append(data);
         });
     }
-
-    $("#article-container").fadeIn(500, function () {
-        $("#header-container").fadeIn(500);
-    })
 
     scroll = function (e) {
         var pos = $(document).scrollTop();
@@ -112,7 +145,6 @@
 
     document.onmousewheel = scroll;
 
-
     function titleEnter(title) {
         hr = $(title).next();
         $(hr).css('width', title.offsetWidth);
@@ -123,10 +155,34 @@
         $(hr).css('width', 0);
     }
 
-    function onClick() {
-        $('#article-container').hide(1000).queue(function () {
+    function clickPreView(url, img_url) {
+        if (img_url){
+            var artimg = document.getElementById('article-img');
+            artimg.style.backgroundImage = 'url(' + img_url + ')';
+        }
 
-        });
+        $('#article-view').load(url);
+        $("#myCarousel").carousel('next');
+        $('#header-static').addClass('navbar-fixed-top');
+        $('#header-static').addClass('is-visible');
+        document.onmousewheel = function (e) {
+
+            var pos = $(document).scrollTop();
+            var h = $('#header-static').height();
+            if (pos <= h){
+                $('#header-static').fadeIn(500);
+            }
+
+            if (e.wheelDelta < 0) {
+                $('#header-static').hide();
+            }
+        };
+    }
+    
+    function onClick() {
+        var caro = document.getElementById('myCarousel');
+        $(caro).carousel('prev');
+        document.onmousewheel = scroll;
     }
 </script>
 </body>

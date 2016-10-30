@@ -471,7 +471,7 @@ pre code {
     }
 }
 
-@media only screen and (min-width: 1170px) {
+@media only screen and (min-width: 800px) {
     .navbar-custom {
         -webkit-transition: background-color .5s;
         -moz-transition: background-color .5s;

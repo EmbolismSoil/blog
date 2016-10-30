@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9c9eb384-bd24-4e2e-b8cf-6a52f43df2d0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/static/blog.css" afterPath="$PROJECT_DIR$/app/static/blog.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/index.html" afterPath="$PROJECT_DIR$/app/templates/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/preview.html" afterPath="$PROJECT_DIR$/app/templates/preview.html" />
     </list>
     <ignored path="blog.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,8 +28,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="85" column="32" selection-start-line="85" selection-start-column="32" selection-end-line="85" selection-end-column="32" />
+            <state relative-caret-position="20">
+              <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#header#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -63,8 +63,8 @@
       <file leaf-file-name="blog.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/static/blog.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="495" column="18" selection-start-line="495" selection-start-column="0" selection-end-line="496" selection-end-column="0" />
+            <state relative-caret-position="1049">
+              <caret line="533" column="25" selection-start-line="533" selection-start-column="4" selection-end-line="533" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -134,8 +134,8 @@
         <option value="$PROJECT_DIR$/app/main/views.py" />
         <option value="$PROJECT_DIR$/app/templates/view_article.html" />
         <option value="$PROJECT_DIR$/app/static/index.html" />
-        <option value="$PROJECT_DIR$/app/static/blog.css" />
         <option value="$PROJECT_DIR$/app/templates/preview.html" />
+        <option value="$PROJECT_DIR$/app/static/blog.css" />
         <option value="$PROJECT_DIR$/app/templates/index.html" />
       </list>
     </option>
@@ -248,6 +248,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="blog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="blog" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -398,7 +416,7 @@
       <updated>1477407952232</updated>
       <workItem from="1477824146488" duration="52000" />
       <workItem from="1477824307118" duration="5371000" />
-      <workItem from="1477830841430" duration="13704000" />
+      <workItem from="1477830841430" duration="14848000" />
     </task>
     <servers />
   </component>
@@ -411,7 +429,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19127000" />
+    <option name="totallyTimeSpent" value="20271000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-4" width="1303" height="773" extended-state="6" />
@@ -778,14 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/static/blog.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="495" column="18" selection-start-line="495" selection-start-column="0" selection-end-line="496" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/static/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -817,10 +827,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/blog.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1049">
+          <caret line="533" column="25" selection-start-line="533" selection-start-column="4" selection-end-line="533" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="85" column="32" selection-start-line="85" selection-start-column="32" selection-end-line="85" selection-end-column="32" />
+        <state relative-caret-position="20">
+          <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#header#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />

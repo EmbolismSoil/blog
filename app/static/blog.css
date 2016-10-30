@@ -410,7 +410,6 @@ pre code {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 3;
     font-family: -apple-system, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "Microsoft JhengHei", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif;
     line-height: 1.7
 }
@@ -474,9 +473,9 @@ pre code {
 
 @media only screen and (min-width: 1170px) {
     .navbar-custom {
-        -webkit-transition: background-color .3s;
-        -moz-transition: background-color .3s;
-        transition: background-color .3s;
+        -webkit-transition: background-color .5s;
+        -moz-transition: background-color .5s;
+        transition: background-color .5s;
         -webkit-transform: translate3d(0, 0, 0);
         -moz-transform: translate3d(0, 0, 0);
         -ms-transform: translate3d(0, 0, 0);

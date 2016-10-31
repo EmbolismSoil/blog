@@ -1,12 +1,14 @@
 <div class="post-preview"  style="margin: 0% 18%">
     {% if article.img_url %}
-        <a  href="javascript: clickPreView('{{ url_for("main.view_article", name=article.name) }}', '{{ article.img_url }}')">
-    {% else %}
-        <a  href="javascript: clickPreView('{{ url_for("main.view_article", name=article.name) }}', '')">
-    {% endif %}
-            <h2 class="post-title" onmouseover="titleEnter(this)" onmouseout="titleLeave(this)" style="display: block">
+            <h2 class="post-title" onmouseover="titleEnter(this)" onmouseout="titleLeave(this)" style="display: block" 
+                    onclick="clickPreView(this, '{{ url_for("main.view_article", name=article.name) }}', '{{ article.img_url }}')">
                 {{ article.title }}
-            </h2>
+            </h2>    
+    {% else %}
+            <h2 class="post-title" onmouseover="titleEnter(this)" onmouseout="titleLeave(this)" style="display: block" 
+                    onclick="clickPreView(this, '{{ url_for("main.view_article", name=article.name) }}', '')">
+                {{ article.title }}
+            </h2>        {% endif %}
             <hr/>
         </a>
         <h4 class="post-subtitle">

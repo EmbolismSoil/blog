@@ -150,6 +150,15 @@
         $("#article-container").fadeIn(500);
     })
 
+        $('#LEEK').unbind('click').click(function(){
+                if( $('#header-static').hasClass('navbar-fixed-top'))
+                    return;
+                                        
+                $.scrollTo('#main-header', 1000);
+                $('#header-static').addClass('is-visible');
+                $('#header-static').addClass('navbar-fixed-top');
+        });
+
     for (var i = 1; i <= 10; ++i) {
         $('#article-preview-' + i).load('/post-preview');
     }
@@ -228,11 +237,13 @@
         $('#myCarousel').carousel('prev');
         $.scrollTo(last_id, 1000);
 
-        $('#LEEK').unbind('click').click(function(){            
+        $('#LEEK').unbind('click').click(function(){
+                if( $('#header-static').hasClass('navbar-fixed-top'))
+                    return;
+
                 $.scrollTo('#main-header', 1000);
                 $('#header-static').addClass('is-visible');
                 $('#header-static').addClass('navbar-fixed-top');
-                $('#LEEK').unbind('click');
         });
 
         $('#LEEK').html('LEEK博客');

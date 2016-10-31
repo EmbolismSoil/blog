@@ -76,7 +76,7 @@
         <!-- 轮播（Carousel）项目 -->
         <div class="carousel-inner">
             <div class="item active">
-                <header class="intro-header" style="background-image: url(/static/home-bg.jpg)", id="main-header">
+                <header class="intro-header" style="background-image: url(/static/home-bg.jpg);", id="main-header">
                     <div class="site-heading">
 
                     </div>
@@ -117,9 +117,9 @@
         });
     }
 
-    scroll = function (e) {
+    scroll = function (e, header_name) {
         var pos = $(document).scrollTop();
-        var h = $('#main-header').height();
+        var h = $(header_name).height();
 
         if (pos <= h){
             if (!$('#header-static').hasClass('navbar-fixed-top')){
@@ -142,7 +142,9 @@
         }
     };
 
-    document.onmousewheel = scroll;
+    document.onmousewheel = function (e) {
+        scroll(e, '#main-header');
+    };
 
     function titleEnter(title) {
         hr = $(title).next();
@@ -160,28 +162,25 @@
             artimg.style.backgroundImage = 'url(' + img_url + ')';
         }
 
+        document.onmousewheel = function (e) {
+            scroll(e, '#article-img');
+        }
+
         $('#article-view').load(url);
         $("#myCarousel").carousel('next');
-        $('#header-static').addClass('navbar-fixed-top');
         $('#header-static').addClass('is-visible');
-        document.onmousewheel = function (e) {
-
-            var pos = $(document).scrollTop();
-            var h = $('#header-static').height();
-            if (pos <= h){
-                $('#header-static').fadeIn(500);
-            }
-
-            if (e.wheelDelta < 0) {
-                $('#header-static').hide();
-            }
-        };
+        $('#header-static').addClass('navbar-fixed-top');
     }
     
     function onClick() {
         var caro = document.getElementById('myCarousel');
         $(caro).carousel('prev');
-        document.onmousewheel = scroll;
+
+        document.onmousewheel = function (e) {
+            scroll(e, '#main-header');
+        };
+        $('#header-static').addClass('is-visible');
+        $('#header-static').addClass('navbar-fixed-top');
     }
 </script>
 </body>

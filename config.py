@@ -17,13 +17,13 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    ADMIN_MAIL = '743703241@qq.com'
-    MAIL_SERVER = 'smtp.qq.com'
+    ADMIN_MAIL = 
+    MAIL_SERVER = 
     MAIL_PORT = 25
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     MAIL_USERNAME = os.environ.get('FLASK_MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('FLASK_MAIL_PASSWORD')#zppqxqabpbdabfhj
+    MAIL_PASSWORD = os.environ.get('FLASK_MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
                               ('sqlite:///' + '/home/lee/github/blog/database/dev.db')
 

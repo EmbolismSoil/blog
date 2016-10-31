@@ -17,8 +17,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    ADMIN_MAIL = 
-    MAIL_SERVER = 
+    ADMIN_MAIL =  os.environ.get('FLASK_ADMIN_MAIN')
+    MAIL_SERVER = os.environ.get('FLASK_MAIL_SERVER')
     MAIL_PORT = 25
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False

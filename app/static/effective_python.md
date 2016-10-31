@@ -6,7 +6,7 @@ meta: 2016-10-29
 ---
 
 
-## 了解bytes、str与unicode的区别
+# 了解bytes、str与unicode的区别
 
 **三者之间的关系：**
 + 字符串是独立于编码的抽象,是使用特定编码后的字节串
@@ -14,7 +14,7 @@ meta: 2016-10-29
 + unicode是一种具体编码方式
 
 **举个例子：**
-```python3
+```python
     s = u"一个例子"
     b = u"一个例子".encode("UTF8")  #使用UTF对字符串进行编码
     print(type(s))
@@ -32,7 +32,7 @@ b'\xe4\xb8\x80\xe4\xb8\xaa\xe4\xbe\x8b\xe5\xad\x90'
 
 **python2中的情况**：
 在python2里面实际上同时存在str和unicode两种对象，其中str表示编码后的字符串，而unicode则表示未编码的unicode字符串。str可以通过`#-*- coding: UTFx -*-`声明默认的编码。下面看一个例子:
-```python2
+```python
 #-*- coding: UTF8 -*-
 
 if __name__ == "__main__":

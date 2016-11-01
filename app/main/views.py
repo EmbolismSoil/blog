@@ -64,10 +64,10 @@ def edit_profile_admin(id):
     return render_template('edit-profile.html', form=form, user=user)
 
 
-@main.route('/post-preview', methods=['GET'])
+@main.route('/post-preview')
 def get_post_preview():
-    md = Markdown('app/static/markdown/effective_python.md')
-    md.img_url = '/static/post-1.jpg'
+    md = Markdown('/home/lee/github/blog/app/static/markdown/effective_python.md')
+    md.img_url = '/static/img/post-1.jpg'
     return render_template('preview.html', article=md)
 
 

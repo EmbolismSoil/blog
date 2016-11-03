@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 如何使用字形图标（Glyphicons）</title>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            overflow-y: hidden;
+        }
+
+        .container {
+            margin: 0;
+            width: 100%;
+        }
+
+        .expand-height {
+            height: 100%;
+        }
+
+        .aside1 {
+            background-color: #2A2A2A;
+            padding: 0;
+            max-width: 48px;
+        }
+
+        .row {
+            height: 100%;
+        }
+
+        .nav-costumer > li > a {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        .nav-pills > li > a {
+            border-radius: 0px;
+            margin-top: -2px;
+        }
+
+        .nav-pills > li > a:hover {
+            background: inherit;
+            opacity: 0.7;
+            background: #46b8da;
+            display: block;
+        }
+
+        .nav-pills > li > a:visited {
+            background: #2a6496;
+
+        }
+
+        .nav-pills > li > a > i, .nav-pills> li > a > span{
+            color: white;
+        }
+
+        .aside2 {
+            //background-image: url("public/img/bg.jpg");
+            background-color: #46b8da;
+            background-size: cover;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .bottom {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .avatar, .basic-info {
+            text-align: center;
+        }
+
+        .avatar>img{
+            border: 1px solid transparent;
+        }
+        .avatar>img:hover{
+            border: 1px solid #cd5c5c;
+        }
+
+        .user {
+            margin-top: 15%;
+        }
+
+        .user > .basic-info >a{
+            color: white;
+        }
+
+        .user > .user-stats > ul > li > a{
+            color: white;
+        }
+
+        .user-font {
+            font-family: Arial;
+        }
+
+        .user .basic-info .nick-name{
+            font-size: 24.5px;
+            text-decoration: none;
+            //color: #5e5e5e;
+            color: white;
+        }
+
+        .user .basic-info .nick-name:hover{
+            opacity: 0.8;
+            //color: #2a6496;
+        }
+
+        .avatar{
+            width: 90px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .user .basic-info{
+            margin-top: 5%;
+        }
+
+        .user .basic-info > a{
+            margin-top: 10%;
+        }
+
+        .user.basic-info > a:hover{
+            cursor: pointer;
+        }
+
+        .about{
+            margin: 8% 0;
+            //color: #555555;
+            color: white;
+            font-size: 15px;
+        }
+
+        ul.clearfix{
+            list-style: none;
+            padding: 0px;
+            margin-top: 10%;
+        }
+
+        ul.clearfix>li{
+            display: inline-block;
+            margin: 10px 5px;
+            border-right: 1px solid #dddddd;
+            text-align: left;
+        }
+
+        ul.clearfix>li>a{
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        ul.clearfix>li{
+            padding: 0px 10px;
+        }
+
+        ul.clearfix>li>a>b{
+            display: block;
+        }
+
+        .books{
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .books>h5{
+            margin: 10px 0px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .books>ul{
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .books>ul>li>a{
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .costumer-nav-tabs{
+            border-bottom: 2px solid #d5d5d5;
+        }
+
+        .costumer-nav-tabs > li{
+            margin: -2px;
+        }
+
+        .costumer-nav-tabs > li > a{
+            border-bottom: 2px solid transparent;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            color: #46b8da;
+            border-radius: 0px;
+        }
+
+        .costumer-nav-tabs > li >a:hover{
+            opacity: 0.8;
+            background-color: white;
+        }
+
+        .costumer-nav-tabs > li > a:visited{
+            background-color: white;
+        }
+
+        .costumer-nav-tabs > li >a.active{
+            border-bottom: 2px solid #46b8da;
+        }
+
+        .aside3{
+            height: 100%;
+        }
+
+        .article-view{
+            height: 95%;
+            overflow-y: scroll;
+        }
+
+        a.fa-container{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container expand-height">
+    <div class="row">
+        <div class="col-md-3 expand-height">
+            <div class="row">
+                <div class="col-md-2 expand-height aside1">
+                    <ul class="nav nav-pills nav-stacked expand-height nav-costumer">
+                        <li><a href="#" class="fa-container"><i class="fa fa-align-justify fa-lg"></i></a></li>
+                        <li><a href="#" class="fa-container"><i class="fa fa-user fa-lg"></i></a></li>
+                        <li><a href="#" class="fa-container"><i class="fa fa-home fa-lg"></i></a></li>
+                    </ul>
+
+                    <ul class="nav nav-pills nav-stacked bottom">
+                        <li><a href="#"><span class="glyphicon glyphicon-cog" style="color: white"></span></a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-log-out" style="color: white"></span></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-10 expand-height aside2">
+                    <div class="user">
+                        <div class="basic-info">
+                            <div class="avatar">
+                                <img src="public/img/avatar.jpg" class="img-circle img-responsive">
+                            </div>
+                            <h3 class="user-font"><a href="#" class="nick-name">LEEK博客</a></h3>
+                            <a style="font-size: 15px;"><i class="fa fa-github fa2x"><span>&nbsp我的Github</span></i></a>
+                            <div class="about">
+                                <p>若有天我不复勇往, 能否坚持走完这一场</p>
+                            </div>
+                            <div class="sns"></div>
+                        </div>
+                        <div class="user-stats">
+                            <ul class="clearfix">
+                                <li>
+                                    <a href="#"><b>60</b><span>访问</span></a>
+                                </li>
+                                <li>
+                                    <a href="#"><b>6</b><span>评论</span></a>
+                                </li>
+                                <br>
+                                <li>
+                                    <a href="#"><b>17</b><span>文章</span></a>
+                                </li>
+                                <li>
+                                    <a><b>5</b><span>分类</span></a>
+                                </li>
+                                <li>
+                                    <a><b>59</b><span>收获赞</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="books">
+                            <h5 style="display: block">我的分类：</h5>
+                            <ul  style="list-style: none; display: block">
+                                <li>
+                                    <a class="fa fa-book" href="#">&nbsp;算法</a>
+                                    <a class="fa fa-book" href="#">&nbsp;C/C++</a>
+                                    <a class="fa fa-book" href="#">&nbsp;LINUX</a>
+                                    <a class="fa fa-book" href="#">&nbsp;PYTHON</a>
+                                    <a class="fa fa-book" href="#">&nbsp;JAVA</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9 aside3">
+            <div class="row">
+                <ul class="nav nav-tabs costumer-nav-tabs">
+                    <li onclick="click_nav_tab(this)">
+                        <a href="#">最新文章</a>
+                    </li>
+                    <li onclick="click_nav_tab(this)">
+                        <a href="#">热门文章</a>
+                    </li>
+                    <li onclick="click_nav_tab(this)">
+                        <a href="#">最新动态</a>
+                    </li>
+                </ul>
+
+                <div class="article-view">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    var click_nav_tab = function (e) {
+        var children = $(e).parent().children();
+        for (var cnt = 0; cnt < children.length; ++cnt){
+            $(children[cnt].firstElementChild).removeClass('active');
+        }
+        $(e.firstElementChild).addClass('active');
+    }
+</script>
+
+</html>

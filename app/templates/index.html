@@ -76,7 +76,7 @@
 <div id="myCarousel" class="carousel slide" data-wrap="false">
             <!-- 首页header背景-->                
         <div class="carousel-inner">
-            <div class="item active">
+            <div class="item active" id="preview-page">
                 <header class="intro-header" style="background-image: url(/static/img/home-bg.jpg);", id="main-header">
                     <div class="site-heading">
 
@@ -87,48 +87,16 @@
                         <div id="article-preview-1">
 
                         </div>
-                        
+
                         <div id="article-preview-2">
-                            
+
                         </div>
-                        
-                        <div id="article-preview-3">
-                            
-                        </div>
-                        
-                        <div id="article-preview-4">
-                            
-                        </div>
-                        
-                        <div id="article-preview-5">
-                            
-                        </div>
-                        
-                        <div id="article-preview-6">
-                            
-                        </div>
-                        
-                        <div id="article-preview-7">
-                            
-                        </div>
-                        
-                        <div id="article-preview-8">
-                            
-                        </div>
-                        
-                        <div id="article-preview-9">
-                            
-                        </div>
-                        
-                        <div id="article-preview-10">
-                            
-                        </div>                        
                     </div>
                 </div>
             </div>
 
             <!-- 放置文章阅读页面-->                
-            <div class="item">
+            <div class="item" id='view-page'>
                 <header class="intro-header"  id="article-img">
                     <div class="site-heading">
                         <h1></h1>
@@ -159,7 +127,7 @@
                 $('#header-static').addClass('navbar-fixed-top');
         });
 
-    for (var i = 1; i <= 10; ++i) {
+    for (var i = 1; i <= 1; ++i) {
         $('#article-preview-' + i).load('/app/post-preview');
     }
 
@@ -222,8 +190,7 @@
             onClick('#' + last_id);
         });
 
-        $("#myCarousel").carousel('next');     
-        $.scrollTo('#article-img', 1000);
+        $("#myCarousel").carousel('next', 2000);
     }
     
     function onClick(last_id) {
@@ -234,14 +201,12 @@
         $('#header-static').addClass('is-visible');
         $('#header-static').removeClass('navbar-fixed-top');
 
-        $('#myCarousel').carousel('prev');
-        $.scrollTo(last_id, 1000);
+        $('#myCarousel').carousel('prev', 2000);
 
         $('#LEEK').unbind('click').click(function(){
                 if( $('#header-static').hasClass('navbar-fixed-top'))
                     return;
 
-                $.scrollTo('#main-header', 1000);
                 $('#header-static').addClass('is-visible');
                 $('#header-static').addClass('navbar-fixed-top');
         });

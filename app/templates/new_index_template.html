@@ -8,8 +8,8 @@
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="/static/css/Leek_Blog.css" rel="stylesheet">
-    <style>
 
+    <style>
 
     </style>
 </head>
@@ -45,7 +45,7 @@
                                     <img src="/static/img/avatar.jpg" class="img-circle img-responsive">
                                 </div>
                                 <h3 class="user-font"><a href="#" class="nick-name">{{user.nickname}}</a></h3>
-                                <a style="font-size: 15px;"><i class="fa fa-github fa2x"><span>&nbsp我的Github</span></i></a>
+                                <a style="font-size: 15px;" href="{{user.github_link}}"><i class="fa fa-github fa2x"><span>&nbsp我的Github</span></i></a>
                                 <div class="about">
                                     <p>{{user.about}}</p>
                                 </div>
@@ -75,12 +75,9 @@
                                 <h5 style="display: block">我的分类：</h5>
                                 <ul style="list-style: none; display: block">
                                 {% for c in user.categories %}
-                                    <li><a class="fa fa-book" href="#">&nbsp;算法</a></li>
-                                    <li><a class="fa fa-book" href="#">&nbsp;C/C++</a></li>
-                                    <li><a class="fa fa-book" href="#">&nbsp;LINUX</a></li>
-                                    <li><a class="fa fa-book" href="#">&nbsp;PYTHON</a></li>
-                                    <li><a class="fa fa-book" href="#">&nbsp;JAVA</a></li>
+                                    <li class="fa fa-book" href="#">&nbsp;{{c}}</li>
                                 </ul>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

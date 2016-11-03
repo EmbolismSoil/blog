@@ -1,0 +1,285 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    overflow-y: hidden;
+    font-family: "Microsoft YaHei" ! important;
+}
+
+.container {
+    margin: 0;
+}
+
+.expand-height {
+    height: 100%;
+}
+
+.expand-width{
+    width: 100%;
+}
+
+.aside1 {
+    background-color: #2A2A2A;
+    padding: 0;
+    max-width: 48px;
+    z-index: 1024;
+}
+
+.nav-costumer > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.nav-pills > li > a {
+    border-radius: 0px;
+    margin-top: -2px;
+}
+
+.nav-pills > li > a:hover {
+    background: inherit;
+    opacity: 0.7;
+    background: #46b8da;
+    display: block;
+}
+
+.nav-pills > li > a:visited , .nav-pills > li > a.active{
+    background: #2a6496;
+
+}
+
+.nav-pills > li > a > i, .nav-pills> li > a > span{
+    color: white;
+}
+
+.aside2 {
+//background-image: url("public/img/bg.jpg");
+    background-color: #46b8da;
+    background-size: cover;
+    text-align: center;
+    padding: 30px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.avatar, .basic-info {
+    text-align: center;
+}
+
+.avatar>img{
+    border: 1px solid transparent;
+}
+.avatar>img:hover{
+    border: 1px solid #cd5c5c;
+}
+
+.user {
+    margin-top: 15%;
+
+}
+
+.user > .basic-info >a{
+    color: white;
+}
+
+.user > .user-stats > ul > li > a{
+    color: white;
+}
+
+.user-font {
+    font-family: Arial;
+}
+
+.user .basic-info .nick-name{
+    font-size: 24.5px;
+    text-decoration: none;
+//color: #5e5e5e;
+    color: white;
+}
+
+.user .basic-info .nick-name:hover{
+    opacity: 0.8;
+//color: #2a6496;
+}
+
+.avatar{
+    width: 90px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.user .basic-info{
+    margin-top: 5%;
+}
+
+.user .basic-info > a{
+    margin-top: 10%;
+}
+
+.user.basic-info > a:hover{
+    cursor: pointer;
+}
+
+.about{
+    margin: 8% 0;
+//color: #555555;
+    color: white;
+    font-size: 15px;
+}
+
+ul.clearfix{
+    list-style: none;
+    padding: 0px;
+    margin-top: 10%;
+}
+
+ul.clearfix>li{
+    display: inline-block;
+    margin: 10px 5px;
+    border-right: 1px solid #dddddd;
+    text-align: left;
+}
+
+ul.clearfix>li>a{
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+ul.clearfix>li{
+    padding: 0px 10px;
+}
+
+ul.clearfix>li>a>b{
+    display: block;
+}
+
+.books{
+    margin-top: 30px;
+    text-align: left;
+}
+
+.books>h5{
+    margin: 10px 0px;
+    font-weight: bold;
+    color: white;
+}
+
+.books>ul{
+    padding: 0;
+    margin-top: 15px;
+}
+
+.books>ul>li{
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.costumer-nav-tabs{
+    border-bottom: 2px solid #d5d5d5;
+}
+
+.costumer-nav-tabs > li{
+    margin: -2px;
+}
+
+.costumer-nav-tabs > li > a{
+    border-bottom: 2px solid transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    color: #46b8da;
+    border-radius: 0px;
+}
+
+.costumer-nav-tabs > li >a:hover{
+    opacity: 0.8;
+    background-color: white;
+}
+
+.costumer-nav-tabs > li > a:visited{
+    background-color: white;
+}
+
+.costumer-nav-tabs > li >a.active{
+    border-bottom: 2px solid #46b8da;
+}
+
+.aside3{
+    height: 100%;
+    padding: 30px 80px;
+}
+
+.article-view{
+    overflow-y: hidden;
+}
+
+a.fa-container{
+    text-align: center;
+}
+
+.article
+{
+    border-bottom: 1px dashed #9d9d9d;
+    padding-bottom: 17px;
+    margin-bottom: 17px;
+}
+
+.article-view>.article-list
+{
+    margin: 20px 0px 50px 0px;
+}
+.article-view>.article-list>.article
+{
+    line-height: 20px;
+}
+.article-view>.article-list>.article>.article-shared-time
+{
+    color: #717171;
+    font-size: 13px;
+    margin: 8px 0px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+.article-view>.article-list>.article>.article-title{
+    margin: 0px 0px 10px 0px;
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: bold;
+    color: #666666;
+    font-family: -apple-system, "Helvetica Neue";
+    cursor: pointer;
+}
+
+.article-view>.article-list>.article>.article-title:hover{
+    opacity: 0.8;
+}
+
+.article-view>.article-list>.article>.article-footer{
+    color: #999999;
+    cursor: pointer;
+}
+
+.article-view>.article-list{
+    max-height: 100%;
+}
+
+.scroll-able{
+    overflow-y: auto;
+}

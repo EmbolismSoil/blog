@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Bootstrap 实例 - 如何使用字形图标（Glyphicons）</title>
+    <title>LEEK的博客</title>
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -30,7 +30,7 @@
 
                     <ul class="nav nav-pills nav-stacked bottom">
                         <li onclick="click_nav_left_in(this, 'aside2-4')"><a href="#"><span class="glyphicon glyphicon-cog"
-                                                                                      style="color: white"></span></a>
+                                                                                            style="color: white"></span></a>
                         </li>
                         <li onclick="click_nav_left_in(this, 'aside2-5')"><a href="#"><span
                                 class="glyphicon glyphicon-log-out" style="color: white"></span></a></li>
@@ -44,41 +44,42 @@
                                 <div class="avatar">
                                     <img src="/static/img/avatar.jpg" class="img-circle img-responsive">
                                 </div>
-                                <h3 class="user-font"><a href="#" class="nick-name">LEEK博客</a></h3>
+                                <h3 class="user-font"><a href="#" class="nick-name">{{user.nickname}}</a></h3>
                                 <a style="font-size: 15px;"><i class="fa fa-github fa2x"><span>&nbsp我的Github</span></i></a>
                                 <div class="about">
-                                    <p>若有天我不复勇往, 能否坚持走完这一场</p>
+                                    <p>{{user.about}}</p>
                                 </div>
                                 <div class="sns"></div>
                             </div>
                             <div class="user-stats">
                                 <ul class="clearfix">
                                     <li>
-                                        <a href="#"><b>60</b><span>访问</span></a>
+                                        <a href="#"><b>{{user.views_count}}</b><span>访问</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><b>6</b><span>评论</span></a>
+                                        <a href="#"><b>{{user.comment_count}}</b><span>评论</span></a>
                                     </li>
                                     <br>
                                     <li>
-                                        <a href="#"><b>17</b><span>文章</span></a>
+                                        <a href="#"><b>{{user.article_count}}</b><span>文章</span></a>
                                     </li>
                                     <li>
-                                        <a><b>5</b><span>分类</span></a>
+                                        <a><b>{{user.category_count}}</b><span>分类</span></a>
                                     </li>
                                     <li>
-                                        <a><b>59</b><span>收获赞</span></a>
+                                        <a><b>{{user.like_count}}</b><span>收获赞</span></a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="books">
                                 <h5 style="display: block">我的分类：</h5>
                                 <ul style="list-style: none; display: block">
-                                    <li class="fa fa-book" href="#">&nbsp;算法</li>
-                                    <li class="fa fa-book" href="#">&nbsp;C/C++</li>
-                                    <li class="fa fa-book" href="#">&nbsp;LINUX</li>
-                                    <li class="fa fa-book" href="#">&nbsp;PYTHON</li>
-                                    <li class="fa fa-book" href="#">&nbsp;JAVA</li>
+                                {% for c in user.categories %}
+                                    <li><a class="fa fa-book" href="#">&nbsp;算法</a></li>
+                                    <li><a class="fa fa-book" href="#">&nbsp;C/C++</a></li>
+                                    <li><a class="fa fa-book" href="#">&nbsp;LINUX</a></li>
+                                    <li><a class="fa fa-book" href="#">&nbsp;PYTHON</a></li>
+                                    <li><a class="fa fa-book" href="#">&nbsp;JAVA</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -90,26 +91,6 @@
                                 <div class="avatar">
                                     <img src="/static/img/avatar.jpg" class="img-circle img-responsive">
                                 </div>
-                            </div>
-                            <div class="user-stats">
-                                <ul class="clearfix">
-                                    <li>
-                                        <a href="#"><b>60</b><span>访问</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><b>6</b><span>评论</span></a>
-                                    </li>
-                                    <br>
-                                    <li>
-                                        <a href="#"><b>17</b><span>文章</span></a>
-                                    </li>
-                                    <li>
-                                        <a><b>5</b><span>分类</span></a>
-                                    </li>
-                                    <li>
-                                        <a><b>59</b><span>收获赞</span></a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>

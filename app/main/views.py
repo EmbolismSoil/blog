@@ -74,3 +74,7 @@ def get_post_preview():
 @main.route('/view/article/<name>')
 def view_article(name):
     return render_template('view_article.html', name=name)
+
+@main.route('/test/')
+def test_index():
+    return render_template('new_index.html')

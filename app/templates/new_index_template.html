@@ -9,6 +9,18 @@
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="/static/css/Leek_Blog.css" rel="stylesheet">
 
+
+    <script src="/static/js/scrollspy.js"></script>
+    <script src="/static/js/marked.min.js"></script>
+    <script src="/static/js/prettify.min.js"></script>
+
+    <script src="/static/js/raphael.min.js"></script>
+    <script src="/static/js/underscore.min.js"></script>
+    <script src="/static/js/sequence-diagram.min.js"></script>
+    <script src="/static/js/flowchart.min.js"></script>
+    <script src="/static/js/jquery.flowchart.min.js"></script>
+    <script src="/static/js/editormd.js"></script>
+
     <style>
 
     </style>
@@ -96,7 +108,7 @@
         </div>
 
         <div class="col-md-9 aside3 expand-height scroll-able">
-            <div class="row expand-height">
+            <div class="row expand-height article-preview">
                 <ul class="nav nav-tabs costumer-nav-tabs">
                     <li onclick="click_nav_tab(this)">
                         <a href="#" class="active">最新文章</a>
@@ -109,13 +121,17 @@
                     </li>
                 </ul>
 
-                <div class="article-view">
-                    <div class="article-list">
+                <div class="article-view expand-height expand-width">
+                    <div class="article-list expand-height expand-width">
 
                     </div>
                 </div>
 
             </div>
+        </div>
+
+        <div class="article-reader expand-height expand-width scroll-able">
+
         </div>
     </div>
 </div>
@@ -172,5 +188,15 @@
     $.get('post-preview?offset=0&count=10', function (data) {
         $('.article-list').append(data);
     })
+
+    function clickPreview(path) {
+        path = '/app/view/article?path=' + path;
+        $.get(path, function (data) {
+            history.pushState(path, 'view article', '/app/view/article')
+            $('.article-reader').append(data);
+            $('.article-reader').animate({right: '0'})
+        })
+    }
+
 </script>
 </html>

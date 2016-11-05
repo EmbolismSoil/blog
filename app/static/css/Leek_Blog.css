@@ -5,6 +5,7 @@ html {
 body {
     height: 100%;
     overflow-y: hidden;
+    overflow-x: hidden;
     font-family: "Microsoft YaHei" ! important;
 }
 
@@ -276,10 +277,27 @@ a.fa-container{
     cursor: pointer;
 }
 
+.article-view>.article-list>.article>.article-shared-time{
+    margin-top: 0px;
+}
+
 .article-view>.article-list{
     max-height: 100%;
 }
 
+.article-preview{
+    z-index: 0;
+}
+
+.article-reader{
+    position: absolute;
+    right: -100%;
+    background: white;
+    top: 0;
+    z-index: 2;
+}
+
 .scroll-able{
     overflow-y: auto;
+    overflow-x: hidden;
 }

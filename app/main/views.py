@@ -48,9 +48,10 @@ def get_post_preview():
     return render_template('article-list.html', articles=articles)
 
 
-@main.route('/view/article/<name>')
-def view_article(name):
-    return render_template('view_article.html', name=name)
+@main.route('/view/article')
+def view_article():
+    path = request.args.get('path')
+    return render_template('view_article.html', path=path)
 
 
 @main.route('/test/')

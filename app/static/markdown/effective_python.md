@@ -1,11 +1,3 @@
----
-title: effective python 
-subtitle: 一点小技巧
-tags: 新建,模板,小书匠
-meta: 2016-10-29
----
-
-
 # 了解bytes、str与unicode的区别
 
 **三者之间的关系：**

@@ -1,10 +1,10 @@
-<div id="layout" style="margin: 0 18%" class="markdown-body">
-    <link href="/static/css/markdown.css" rel="stylesheet"></link>    
+<div id="layout"  class="markdown-body " style="padding: 5% 10%">
+    <link href="/static/css/markdown.css" rel="stylesheet">
     <div id="test-editormd-view">
-        <textarea style="display:none;" name="test-editormd-markdown-doc">###Hello world!</textarea>
+        <textarea name="test-editormd-markdown-doc">###Hello world!</textarea>
     </div>
     <div id="test-editormd-view2">
-                <textarea id="append-test" style="display:none;">
+                <textarea id="append-test">
 
                 </textarea>
     </div>
@@ -15,7 +15,7 @@
 </script> -->
 <script type="text/javascript">
     $(function () {
-        $.get("/static/markdown/{{ name }}", function (markdown) {
+        $.get("{{path}}", function (markdown) {
             testEditormdView = editormd.markdownToHTML("test-editormd-view", {
                 markdown: markdown,//+ "\r\n" + $("#append-test").text(),
                 //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启

@@ -2,7 +2,6 @@ from . import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
-#from flask import current_app
 from datetime import datetime
 
 
@@ -67,12 +66,15 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
     password_hash = db.Column(db.String(128))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+
+    articles = db.relationship('Article', backref='user', lazy='dynamic')
+    categories = db.relationship('Category', backref='user', lazy='dynamic')
 
     # 使用属性装饰器的方式实现属性的只读
     @property
@@ -88,3 +90,25 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+class Article(db.Model):
+    __tablename__ = 'articles'
+    title = db.Column(db.String(128), unique=True)
+    time = db.Column(db.DateTime(), default=datetime.utcnow, primary_key=True)
+    comments = db.Column(db.Integer, default=0)
+    views = db.Column(db.Integer, default=0)
+    likes = db.Column(db.Integer, default=0)
+    path = db.Column(db.String(512), nullable=False)
+    #这里会定义索引吗？
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+
+
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(64), unique=True)
+    count = db.Column(db.Integer, default=0)
+    articles = db.relationship('Article', backref='category', lazy='dynamic')
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

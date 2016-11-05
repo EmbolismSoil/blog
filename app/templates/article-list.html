@@ -1,5 +1,6 @@
+{% for article in articles %}
 <div class="article">
-    <p class="article-shared-time">{{article.time}}&nbsp;天之前</p>
+    <p class="article-shared-time">{{article.time_diff}}</p>
     <div class="article-title">
         <p>{{article.title}}</p>
     </div>
@@ -7,3 +8,4 @@
         <span>阅读&nbsp;{{article.views}}&nbsp;·&nbsp;评论&nbsp;{{article.comments}}·&nbsp;喜欢&nbsp;{{article.likes}}</span>
     </div>
 </div>
+{% endfor %}

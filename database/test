@@ -1,0 +1,2 @@
+use blogDB;
+insert into users(id, email, username, role_id, password_hash, location, about_me)  values(1, '743703241@qq.com', 1, '123321', '陕西-西安', '一个极客');

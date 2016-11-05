@@ -38,7 +38,9 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
-                    password=form.password.data)
+                    password=form.password.data,
+                    location=form.location.data,
+                    about_me=form.about_me.data)
 
         db.session.add(user)
         flash('You can login now')
@@ -50,4 +52,3 @@ def register():
 def before_request():
     if current_user.is_authenticated:
         current_user.ping()
-

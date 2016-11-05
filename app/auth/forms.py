@@ -25,6 +25,8 @@ class RegistrationForm(Form):
     password = PasswordField('Password',
                              validators=[DataRequired(), EqualTo('password2', message="Passwords must match.")])
     password2 = PasswordField('Comfirm password', validators=[DataRequired()])
+    about_me = StringField('About', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, filed):

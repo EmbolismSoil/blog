@@ -1,80 +1,115 @@
 #
-from flask import render_template
+from flask import render_template, request, flash
 from . import main
-from app.models import User
-from flask import abort, flash, redirect, url_for
-from flask_login import login_required, current_user
-from ..auth.forms import EditProfileForm, EditProfileAdminForm
-from app.models import db
-from app.decorators import admin_required
-from .markdown import Markdown
-from markdown import markdown
+from ..models import Article
+from .forms import ArticleForm, CategoryForm
+from flask_login import login_required
+from app import db
+from flask_login import current_user
+from ..models import User
+from ..models import Category
+from flask import url_for, redirect
+from datetime import datetime
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    user = User.query.filter_by(username='LEEK').first()
+    user.article_count = user.articles.count()
+    user.comment_count = 0
+    user.category_count = user.categories.count()
+    user.like_count = 0
+    user.views_count = 0
 
+    for article in user.articles:
+        user.comment_count += article.comments
+        user.like_count += article.likes
+        user.views_count += article.views
 
-@main.route('/user/<username>')
-def user(username):
-    u = User.query.filter_by(username=username).first()
-    if u is None:
-        return abort(404)
-    return render_template('user.html', user=u)
-
-
-@main.route('/edit-profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    form = EditProfileForm()
-    if form.validate_on_submit():
-        current_user.name = form.name.data
-        current_user.location = form.location.data
-        current_user.about_me = form.about_me.data
-        db.session.add(current_user)
-        flash('Your profile has been update')
-        return redirect(url_for('main.user', username=current_user.username))
-    form.name.data = current_user.username
-    form.location.data = current_user.location
-    form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', form=form)
-
-
-@main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
-@login_required
-@admin_required
-def edit_profile_admin(id):
-    user = User.query.get_or_404(id)
-    form = EditProfileAdminForm()
-    if form.validate_on_submit():
-        user.email = form.email.data
-        user.username = form.username.data
-        user.role = form.role.data
-        user.location = form.location.data
-        user.about_me = form.about_me.data
-        db.session.add(user)
-        flash('The profile has been update')
-        return redirect(url_for('main.user', username=user.username))
-    form.email.data = user.email
-    form.username.data = user.username
-    form.role.data = user.role_id
-    form.location.data = user.location
-    form.about_me.data = user.about_me
-    return render_template('edit-profile.html', form=form, user=user)
+    return render_template('new_index_template.html', user=user)
 
 
 @main.route('/post-preview')
 def get_post_preview():
-    md = Markdown('/home/lee/github/blog/app/static/markdown/effective_python.md')
-    md.img_url = '/static/img/post-1.jpg'
-    return render_template('preview.html', article=md)
+    offset = request.args.get('offset')
+    count = request.args.get('count')
+    articles = Article.query.order_by(Article.time.desc()).offset(offset).limit(count).all()
+    now = datetime.utcnow()
+    for article in articles:
+        if round((now - article.time).days) > 0:
+            article.time_diff = str(round((now - article.time).days)) + ' 天之前'
+        elif round((now - article.time).seconds / 3600) > 0:
+            article.time_diff = str(round((now - article.time).seconds / 3600)) + ' 小时前'
+        elif round((now - article.time).seconds / 60) > 0:
+            article.time_diff = str(round((now - article.time).seconds / 60)) + ' 分钟前'
+        else:
+            article.time_diff = str(round((now - article.time).seconds)) + ' 秒之前'
+
+    return render_template('article-list.html', articles=articles)
 
 
 @main.route('/view/article/<name>')
 def view_article(name):
     return render_template('view_article.html', name=name)
 
+
 @main.route('/test/')
 def test_index():
     return render_template('new_index.html')
+
+
+@main.route('/add-article', methods=['GET', 'POST'])
+@login_required
+def add_article():
+    form = ArticleForm()
+    categories = Category.query.all()
+
+    if categories is None:
+        return redirect(url_for('main.add_category'))
+
+    choices = []
+    for item in categories:
+        choices.append((item.name, item.name))
+
+    form.category.choices = choices
+
+    if form.validate_on_submit():
+        file = form.path.data
+        path = 'app/static/markdown/' + datetime.now().strftime('%Y-%m-%d') + '-' + file.filename
+        article = Article(title=form.title.data, path=path)
+        article.path = path
+        article.user_id = current_user.id
+        c = Category.query.filter_by(name=form.category.data).first()
+        cid = c.id
+        article.category_id = cid
+        c.count += 1
+        db.session.add(article)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            flash('Upload failed')
+        else:
+            file.save(path)
+            flash('Upload successfully')
+
+    return render_template('add-article.html', form=form)
+
+
+@main.route('/add-category', methods=['POST'])
+@login_required
+def add_category():
+    form = CategoryForm()
+
+    if form.validate_on_submit():
+        category = Category(name=form.name.data, user_id=current_user.id, count=0)
+        db.session.add(category)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            flash('Add category failed')
+        else:
+            flash('Add category successfully')
+
+    return render_template('add-category.html', form=form)

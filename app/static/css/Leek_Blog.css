@@ -298,6 +298,6 @@ a.fa-container{
 }
 
 .scroll-able{
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
 }

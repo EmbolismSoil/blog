@@ -51,6 +51,8 @@ def get_post_preview():
 @main.route('/view/article')
 def view_article():
     path = request.args.get('path')
+    if path is None:
+        return redirect(url_for('main.index'))
     return render_template('view_article.html', path=path)
 
 

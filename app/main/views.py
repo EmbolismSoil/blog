@@ -78,7 +78,7 @@ def add_article():
 
     if form.validate_on_submit():
         file = form.path.data
-        path = 'app/static/markdown/' + datetime.now().strftime('%Y-%m-%d') + '-' + file.filename
+        path = '/static/markdown/' + datetime.now().strftime('%Y-%m-%d') + '-' + file.filename
         article = Article(title=form.title.data, path=path)
         article.path = path
         article.user_id = current_user.id

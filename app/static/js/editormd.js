@@ -3628,8 +3628,11 @@
             {
                 return "<div class=\"flowchart\">" + code + "</div>";
             }
-            else if ( lang === "math" || lang === "latex" || lang === "katex")
+            else if ( lang === "math" || lang === "latex" || lang === "katex" )
             {
+                return "<p class=\"" + editormd.classNames.tex + "\">" + code + "</p>";
+            }
+            else if(lang === "mathjax!"){
                 return "<p class=\"" + editormd.classNames.tex + "\">" + code + "</p>";
             }
             else

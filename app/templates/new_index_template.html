@@ -3,11 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>LEEK的博客</title>
+
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="/static/css/Leek_Blog.css" rel="stylesheet">
+    <link href="/static/css/editormd_css.css" rel="stylesheet">
 
 
     <script src="/static/js/scrollspy.js"></script>
@@ -41,8 +43,9 @@
                     </ul>
 
                     <ul class="nav nav-pills nav-stacked bottom">
-                        <li onclick="click_nav_left_in(this, 'aside2-4')"><a href="#"><span class="glyphicon glyphicon-cog"
-                                                                                            style="color: white"></span></a>
+                        <li onclick="click_nav_left_in(this, 'aside2-4')"><a href="#"><span
+                                class="glyphicon glyphicon-cog"
+                                style="color: white"></span></a>
                         </li>
                         <li onclick="click_nav_left_in(this, 'aside2-5')"><a href="#"><span
                                 class="glyphicon glyphicon-log-out" style="color: white"></span></a></li>
@@ -56,39 +59,40 @@
                                 <div class="avatar">
                                     <img src="/static/img/avatar.jpg" class="img-circle img-responsive">
                                 </div>
-                                <h3 class="user-font"><a href="#" class="nick-name">{{user.username}}</a></h3>
-                                <a style="font-size: 15px;" href="{{user.github_link}}"><i class="fa fa-github fa2x"><span>&nbsp我的Github</span></i></a>
+                                <h3 class="user-font"><a href="#" class="nick-name">{{ user.username }}</a></h3>
+                                <a style="font-size: 15px;" href="{{ user.github_link }}"><i
+                                        class="fa fa-github fa2x"><span>&nbsp我的Github</span></i></a>
                                 <div class="about">
-                                    <p>{{user.about_me}}</p>
+                                    <p>{{ user.about_me }}</p>
                                 </div>
                                 <div class="sns"></div>
                             </div>
                             <div class="user-stats">
                                 <ul class="clearfix">
                                     <li>
-                                        <a href="#"><b>{{user.views_count}}</b><span>访问</span></a>
+                                        <a href="#"><b>{{ user.views_count }}</b><span>访问</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><b>{{user.comment_count}}</b><span>评论</span></a>
+                                        <a href="#"><b>{{ user.comment_count }}</b><span>评论</span></a>
                                     </li>
                                     <br>
                                     <li>
-                                        <a href="#"><b>{{user.article_count}}</b><span>文章</span></a>
+                                        <a href="#"><b>{{ user.article_count }}</b><span>文章</span></a>
                                     </li>
                                     <li>
-                                        <a><b>{{user.category_count}}</b><span>分类</span></a>
+                                        <a><b>{{ user.category_count }}</b><span>分类</span></a>
                                     </li>
                                     <li>
-                                        <a><b>{{user.like_count}}</b><span>收获赞</span></a>
+                                        <a><b>{{ user.like_count }}</b><span>收获赞</span></a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="books">
                                 <h5 style="display: block">我的分类：</h5>
                                 <ul style="list-style: none; display: block">
-                                {% for c in user.categories %}
-                                    <li class="fa fa-book" href="#">&nbsp;{{c.name}}</li>
-                                {% endfor %}
+                                    {% for c in user.categories %}
+                                        <li class="fa fa-book" href="#">&nbsp;{{ c.name }}</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -106,7 +110,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-md-9 aside3 expand-height scroll-able">
             <div class="row expand-height article-preview">
                 <ul class="nav nav-tabs costumer-nav-tabs">
@@ -129,15 +132,33 @@
 
             </div>
         </div>
-
-        <div class="article-reader expand-height expand-width scroll-able">
-
+        <div class="expand-height">
+            <div class="article-reader expand-height expand-width scroll-able">
+            <ul class="nav nav-tabs costumer-nav-tabs costumer-reader-nav-tabs">
+                <li onclick="click_reader_nav_tab(this)">
+                    <a href="#"><< 返回</a>
+                </li>
+            </ul>
+            <div class="reader-content ">
+                <div id="layout"  class="markdown-body " >
+                    <link href="/static/css/markdown.css" rel="stylesheet">
+                    <div id="test-editormd-view">
+                        <textarea name="test-editormd-markdown-doc"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </div>
 </body>
 
 <script>
+    editormd.katexURL = {
+        js  : "/static/js/katex.min",
+        css : "/static/css/katex.min"
+    };
+
     var click_nav_tab = function (e) {
         var children = $(e).parent().children();
         for (var cnt = 0; cnt < children.length; ++cnt) {
@@ -161,7 +182,7 @@
             eNow.style.zIndex = 1;
 
             $(l.firstElementChild).addClass('active');
-            if (this.lastL){
+            if (this.lastL) {
                 $(this.lastL.firstElementChild).removeClass('active');
             }
 
@@ -189,13 +210,35 @@
         $('.article-list').append(data);
     })
 
-    function clickPreview(path) {
-        path = '/app/view/article?path=' + path;
-        $.get(path, function (data) {
-            history.pushState(path, 'view article', '/app/view/article')
-            $('.article-reader').append(data);
-            $('.article-reader').animate({right: '0'})
-        })
+    function clickPreview(path, e) {
+        //path = '/app/view/article?path=' + path;
+        function __animate() {
+                var w = $('.aside1').get(0).offsetWidth;
+                $('.article-reader').animate({left: 0});
+        }
+        $(function () {
+            $.get(path, function (markdown) {
+                testEditormdView = editormd.markdownToHTML("test-editormd-view", {
+                    markdown: markdown,//+ "\r\n" + $("#append-test").text(),
+                   // htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                    htmlDecode: "style,script,iframe",  // you can filter tags decode
+                    //toc             : false,
+                    tocm: true,    // Using [TOCM]
+                    emoji: true,
+                    taskList: true,
+                    tex: true,  // 默认不解析
+                    flowChart: true,  // 默认不解析
+                    sequenceDiagram: true,  // 默认不解析
+                    path: '/static/lib/'
+                });
+                __animate();
+            });
+        });
+        e.onclick = __animate
+    }
+
+    function click_reader_nav_tab(e) {
+        $('.article-reader').animate({left: '100%'});
     }
 
 </script>

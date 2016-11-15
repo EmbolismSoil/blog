@@ -78,9 +78,10 @@ def add_article():
 
     if form.validate_on_submit():
         file = form.path.data
-        path = '/static/markdown/' + datetime.now().strftime('%Y-%m-%d') + '-' + file.filename
+        preview_path = '/static/markdown/' + datetime.now().strftime('%Y-%m-%d') + '-' + file.filename
+        path = 'app' + preview_path
         article = Article(title=form.title.data, path=path)
-        article.path = path
+        article.path = preview_path
         article.user_id = current_user.id
         c = Category.query.filter_by(name=form.category.data).first()
         cid = c.id
@@ -99,7 +100,7 @@ def add_article():
     return render_template('add-article.html', form=form)
 
 
-@main.route('/add-category', methods=['POST'])
+@main.route('/add-category', methods=['POST', 'GET'])
 @login_required
 def add_category():
     form = CategoryForm()

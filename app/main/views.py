@@ -56,6 +56,11 @@ def view_article():
     return render_template('view_article.html', path=path)
 
 
+@main.route('/editor')
+def editor():
+    return render_template('editor.html');
+
+
 @main.route('/test/')
 def test_index():
     return render_template('new_index.html')

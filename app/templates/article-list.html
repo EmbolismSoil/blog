@@ -1,11 +1,11 @@
 {% for article in articles %}
-<div class="article" onclick="clickPreview('{{article.html_path}}', this)">
+<div class="article" onclick="clickPreview('{{article.html_path}}', this)" data-title="{{article.title}}" data-views="{{article.views}}">
     <p class="article-shared-time">{{article.time_diff}}</p>
     <div class="article-title">
         <p>{{article.title}}</p>
     </div>
     <div class="article-footer">
-        <span>阅读&nbsp;{{article.views}}&nbsp;·&nbsp;评论&nbsp;{{article.comments}}·&nbsp;喜欢&nbsp;{{article.likes}}</span>
+        <span>阅读&nbsp;{{article.views}}&nbsp;·&nbsp;评论&nbsp;{{article.comments}}&nbsp;·&nbsp;喜欢&nbsp;{{article.likes}}</span>
     </div>
 </div>
 {% endfor %}

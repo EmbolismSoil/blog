@@ -1,5 +1,5 @@
 #
-from flask import render_template, request, flash
+from flask import render_template, request, flash, make_response
 from . import main
 from ..models import Article
 from .forms import ArticleForm, CategoryForm
@@ -20,12 +20,14 @@ def index():
     user.comment_count = 0
     user.category_count = user.categories.count()
     user.like_count = 0
-    user.views_count = 0
+    user.views_count += 1
+
+    db.session.add(user)
+    db.session.commit()
 
     for article in user.articles:
         user.comment_count += article.comments
         user.like_count += article.likes
-        user.views_count += article.views
 
     return render_template('new_index_template.html', user=user)
 
@@ -34,7 +36,12 @@ def index():
 def get_post_preview():
     offset = request.args.get('offset')
     count = request.args.get('count')
-    articles = Article.query.order_by(Article.time.desc()).offset(offset).limit(count).all()
+    category = request.args.get('category')
+    if category is None:
+        articles = Article.query.order_by(Article.time.desc()).offset(offset).limit(count).all()
+    else:
+        articles = Article.query.filter_by(name=category).order_by(Article.time.desc()).offset(offset).limit(count).all()
+
     now = datetime.utcnow()
     for article in articles:
         article.html_path = article.path
@@ -131,3 +138,19 @@ def add_category():
             flash('Add category successfully')
 
     return render_template('add-category.html', form=form)
+
+
+@main.route('/update-reading-counter', methods=['GET'])
+@login_required
+def update_reading_counter():
+    title = request.args.get("title")
+    article = Article.query.filter_by(title=title).first()
+    if article is not None:
+        article.views += 1
+        try:
+            db.session.add(article)
+            db.session.commit()
+        except :
+            db.session.rollback()
+
+    return make_response()

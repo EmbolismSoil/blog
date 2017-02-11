@@ -72,6 +72,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    views_count = db.Column(db.Integer, default=0, nullable=False)
 
     articles = db.relationship('Article', backref='user', lazy='dynamic')
     categories = db.relationship('Category', backref='user', lazy='dynamic')

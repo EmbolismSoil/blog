@@ -10,6 +10,7 @@ from ..models import User
 from ..models import Category
 from flask import url_for, redirect
 from datetime import datetime
+from markdown import markdown
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -36,6 +37,7 @@ def get_post_preview():
     articles = Article.query.order_by(Article.time.desc()).offset(offset).limit(count).all()
     now = datetime.utcnow()
     for article in articles:
+        article.html_path = article.path
         if round((now - article.time).days) > 0:
             article.time_diff = str(round((now - article.time).days)) + ' 天之前'
         elif round((now - article.time).seconds / 3600) > 0:
@@ -100,6 +102,13 @@ def add_article():
             flash('Upload failed')
         else:
             file.save(path)
+            file = open(path, 'r')
+            all_text = file.read()
+            print(all_text)
+            html_text = markdown(all_text, format="html")
+            html_file = open(path + ".html", 'w')
+            html_file.writelines(html_text)
+            html_file.close()
             flash('Upload successfully')
 
     return render_template('add-article.html', form=form)

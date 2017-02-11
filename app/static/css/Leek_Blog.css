@@ -24,7 +24,6 @@ body {
 .aside1 {
     background-color: #2A2A2A;
     padding: 0;
-    max-width: 48px;
     z-index: 2;
 }
 
@@ -325,4 +324,14 @@ a.fa-container{
 .scroll-able{
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+.overlay{
+    position: absolute;
+    display: none;
+    opacity: 0.4;
+    background-color: #3B666B;
+    width: 100%;
+    height: 100%;
+    z-index: 1024;
 }

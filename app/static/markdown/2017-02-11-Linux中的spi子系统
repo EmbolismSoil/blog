@@ -1,0 +1,218 @@
+# LINUX 中的SPI子系统
+
+>　linux内核通过设备驱动模型构建起来许多子系统，使得内核驱动层次和条理清晰，这些子系统各色各样，有的十分复杂，有的十分简洁，但无论子系统如何复杂，其构建的结构都十分相似，本文希望通过SPI 子系统去一窥linux内核中子系统的结构
+
+## 主要数据结构
+　　我们先来查看`SPI的Makefile`，在目录`drivers/spi`下
+
+```Makefile
+# small core, mostly translating board-specific
+# config declarations into driver model code
+obj-$(CONFIG_SPI_MASTER)		+= spi.o
+
+# SPI master controller drivers (bus)
+obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
+obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
+obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
+obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
+obj-$(CONFIG_SPI_PXA2XX)		+= pxa2xx_spi.o
+obj-$(CONFIG_SPI_OMAP_UWIRE)		+= omap_uwire.o
+obj-$(CONFIG_SPI_MPC83xx)		+= spi_mpc83xx.o
+obj-$(CONFIG_SPI_S3C24XX_GPIO)		+= spi_s3c24xx_gpio.o
+obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24xx.o
+# 	... add above this line ...
+
+# SPI protocol drivers (device/link on bus)
+obj-$(CONFIG_SPI_AT25)		+= at25.o
+# 	... add above this line ...
+
+# SPI slave controller drivers (upstream link)
+# 	... add above this line ...
+
+# SPI slave drivers (protocol for that link)
+# 	... add above this line ...
+```
+　　很明显地可以从上面的`Makefile`中看出来，｀SPI｀子系统中一共有四种驱动：
++ SPI master controller drivers
++ SPI protocol drivers
++ SPI slave controller drivers
++ SPI slave drivers 
+
+### 一. 数据结构(抽象)
++ spi master
+```c
+struct spi_master {  
+    struct device   dev;  
+    s16         bus_num;  
+    u16         num_chipselect;  
+    int         (*setup)(struct spi_device *spi);  
+    int         (*transfer)(struct spi_device *spi, struct spi_message *mesg);  
+    void        (*cleanup)(struct spi_device *spi);  
+};  
+```
+　　一个｀soc｀当中会有一个或者多个`SPI主机控制器`，用于SPI总线的读写，这个`spi_master`就是主机控制器的一个抽象，主机控制器可以用于`SPI`总线的读写，于是抽象中也自然包含了`setup`, `transfer`, `cleanup`方法，而且包含了两个属性`bus_num`, `num_chipselect`分别代表该控制器的`总线ID`和**支持的片选信号数量**也就是**可以支持多少个从机**．
+
++ spi_driver
+
+```c
+struct spi_driver {  
+    int         (*probe)(struct spi_device *spi);  
+    int         (*remove)(struct spi_device *spi);  
+    void            (*shutdown)(struct spi_device *spi);  
+    int         (*suspend)(struct spi_device *spi, pm_message_t mesg);  
+    int         (*resume)(struct spi_device *spi);  
+    struct device_driver    driver;  
+}; 
+```
+　　`spi_driver`是一个从机驱动的抽象，它向用户层提供接口用于操作从机设备，当然，是通过`spi master controller`去操作的．
+
++ spi_device
+```c
+struct spi_device {  
+    struct device       dev;  
+    struct spi_master   *master;  
+    u32         max_speed_hz;  
+    u8          chip_select;  
+    u8          mode;    
+    u8          bits_per_word;  
+    int         irq;  
+    void            *controller_state;  
+    void            *controller_data;  
+    char            modalias[32];   
+};
+```
+　　`spi_device`是一个从机设备的抽象，它向从机驱动提供从机的信息，从而能让从机驱动能够正确地操作从机设备, 可以看到spi_device中有封装一个`spi_master`对象，这个`spi_master`就是从机所挂挂载到的主机驱动器，从机驱动`spi_driver`就是通过这个主机控制器去操作从机设备的．
+
++ spi_board_info　
+```c
+struct spi_board_info {
+    charmodalias[SPI_NAME_SIZE];
+    const void*platform_data;
+    void*controller_data;
+    intirq;
+    u32max_speed_hz;
+    u16bus_num;
+    u16chip_select;
+    u8mode;
+};
+```
+　　一般来说只要定义上面三个抽象就可以了，但是一个板卡上面往往会有多个spi从设备，这样一来一个个地创建spi_device再去初始化，然后注册就会重复做很多初始化的工作，另外还会导致spi_device相关的的代码散落在各个文件中．于是出现了`spi_board_info`，该结构主要用于描述板卡上spi从设备的信息，于是spi子系统可以根据这些信息去创建批量`spi_device`并注册，这样就可以比较便捷地创建spi设备了．
+
+
+## 二. 主机驱动分析
+### 2.1 主机驱动注册
+　　我们需要主机驱动去操作主机设备，所以spi子系统初始化的时候需要注册主机驱动，一般来说主机驱动会作为一个`platform driver`注册到内核当中，这是十分自然的，因为从spi从机设备来说虽然`spi主机`往往代表一条总线，但对于`soc`来说，`spi主机`也不过是一个片上外设而已．
+　　以`qt-2410`这块板子为例，在`mach-qt2410.c`中定义了一个平台设备
+```c
+　　static struct platform_device qt2410_spi = {
+	.name		  = "s3c24xx-spi-gpio",
+	.id		  = 1,
+	.dev = {
+		.platform_data = &spi_gpio_cfg,
+	},
+};
+```
+　　在系统启动时会调用到`s3c_arch_init`函数，在该函数中完成平台设备的注册，将`qt2410_spi`注册到内核中．根据linux的设备驱动模型工作原理，我们知道会有一个名为`s3c24xx-spi-gpio`的`platform driver`在注册时其`probe`函数会被调用．这个名为`s3c24xx-spi-gpio`的`platform　driver`是作为一个内核模块加载到内核的，它被定义在`spi-s3c24xx_gpio.c`文件中．
+```c
+static struct platform_driver s3c2410_spigpio_drv = {
+	.probe		= s3c2410_spigpio_probe,
+        .remove		= s3c2410_spigpio_remove,
+        .suspend	= s3c2410_spigpio_suspend,
+        .resume		= s3c2410_spigpio_resume,
+        .driver		= {
+		.name	= "s3c24xx-spi-gpio",
+		.owner	= THIS_MODULE,
+        },
+};
+```
+　　在设备和驱动绑定之后`s3c2410_spigpio_probe`方法被调用，在这个方法中，主要完成了两件事：
+  + 根据主机控制器的信息也就是`qt2410_spi`中的信息，去创建其在内核中的抽象`spi_master`
+  + 根据spi_board_info中描述的从机设备信息去创建从机设备在内核中的抽象`spi_device`并且注册到内核中
+
+　　下面我们来分析该函数：
+```c
+static int s3c2410_spigpio_probe(struct platform_device *dev)
+{
+	struct spi_master	*master;
+	struct s3c2410_spigpio  *sp;
+	int ret;
+	int i;
+	
+	//malloc一个主机对象,并且分配了s3c2410_spigpio对象用于储存主机对象需要的gpio相关的信息
+	master = spi_alloc_master(&dev->dev, sizeof(struct s3c2410_spigpio));
+	if (master == NULL) {
+		dev_err(&dev->dev, "failed to allocate spi master\n");
+		ret = -ENOMEM;
+		goto err;
+	}
+	//获取分配到的s3c2410_spigpio对象
+	sp = spi_master_get_devdata(master);
+	//将s3c2410_spigpio对象储存道platform设备的drvdata域上，以便对应的驱动使用它
+	platform_set_drvdata(dev, sp);
+	//获取spi控制器使用到的gpio的配置信息，也就是spi_gpio_cfg
+	sp->info = dev->dev.platform_data;
+	
+	//省略代码若干．．．
+	
+	//根据gpio的配置信息去初始化gpio
+	s3c2410_gpio_setpin(sp->info->pin_clk, 0);
+	s3c2410_gpio_setpin(sp->info->pin_mosi, 0);
+
+	s3c2410_gpio_cfgpin(sp->info->pin_clk, S3C2410_GPIO_OUTPUT);
+	s3c2410_gpio_cfgpin(sp->info->pin_mosi, S3C2410_GPIO_OUTPUT);
+	s3c2410_gpio_cfgpin(sp->info->pin_miso, S3C2410_GPIO_INPUT);
+	//在这个函数中注册主机驱动
+	ret = spi_bitbang_start(&sp->bitbang);
+	//省略代码若干...
+
+}
+```
+
+在上面的函数中我们看到了`spi master`驱动根据配置信息去初始化了部分硬件，比如说gpio,最后在｀spi_bitbang_start｀中调用`spi_register_master`函数完成注册.在`spi_register_master`会去扫描`spi_board_info`中的所有spi从机设备信息(内核启动时已经准备好了这些信息)从而初始化`master`结构，最后将代表`spi master controller`的设备驱动模型注册到内核中．
+```c
+int spi_register_master(struct spi_master *master)
+{
+	//省略一些检查代码....
+	
+	//注册到设备驱动模型
+	status = class_device_add(&master->cdev);
+	//扫描spi_board_info获得spi从设备的全局设备信息，
+	//从而对master抽象进一步填充
+	scan_boardinfo(master);
+}
+
+static void __init_or_module
+scan_boardinfo(struct spi_master *master)
+{
+	struct boardinfo	*bi;
+	struct device		*dev = master->cdev.dev;
+
+	down(&board_lock);
+	list_for_each_entry(bi, &board_list, list) {
+		struct spi_board_info	*chip = bi->board_info;
+		unsigned		n;
+
+		for (n = bi->n_board_info; n > 0; n--, chip++) {
+			if (chip->bus_num != master->bus_num)
+				continue;
+			/* some controllers only have one chip, so they
+			 * might not use chipselects.  otherwise, the
+			 * chipselects are numbered 0..max.
+			 */
+			if (chip->chip_select >= master->num_chipselect
+					&& master->num_chipselect) {
+				dev_dbg(dev, "cs%d > max %d\n",
+					chip->chip_select,
+					master->num_chipselect);
+				continue;
+			}
+			//如果chip_select合法，就new一个spi设备
+			(void) spi_new_device(master, chip);
+		}
+	}
+	up(&board_lock);
+}
+```
+
+## 2.2 主机驱动的实现
+

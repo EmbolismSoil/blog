@@ -10,6 +10,7 @@
     <script src="/static/js/bootstrap.min.js"></script>
     <link href="/static/css/Leek_Blog.css" rel="stylesheet">
     <link href="/static/css/editormd_css.css" rel="stylesheet">
+    <link href="/static/css/markdown.css" rel="stylesheet">
 
 
     <script src="/static/js/scrollspy.js"></script>
@@ -28,6 +29,10 @@
     </style>
 </head>
 <body>
+<div class="overlay" id="loading">
+    <img src="/static/img/loading.gif" style="position: relative; left: 48%; top: 48%">
+</div>
+
 <div class="container expand-height expand-width">
     <div class="row expand-height">
         <div class="col-md-3 expand-height">
@@ -132,6 +137,7 @@
 
             </div>
         </div>
+
         <div class="expand-height">
             <div class="article-reader expand-height expand-width scroll-able">
             <ul class="nav nav-tabs costumer-nav-tabs costumer-reader-nav-tabs">
@@ -139,13 +145,9 @@
                     <a href="#"><< 返回</a>
                 </li>
             </ul>
-            <div class="reader-content ">
-                <div id="layout"  class="markdown-body " >
-                    <link href="/static/css/markdown.css" rel="stylesheet">
-                    <div id="test-editormd-view">
-                        <textarea name="test-editormd-markdown-doc"></textarea>
-                    </div>
-                </div>
+
+            <div id="article-content">
+
             </div>
         </div>
         </div>
@@ -216,25 +218,35 @@
                 var w = $('.aside1').get(0).offsetWidth;
                 $('.article-reader').animate({left: 0});
         }
+
         $(function () {
-            $.get(path, function (markdown) {
-                testEditormdView = editormd.markdownToHTML("test-editormd-view", {
-                    markdown: markdown,//+ "\r\n" + $("#append-test").text(),
-                   // htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
-                    htmlDecode: "style,script,iframe",  // you can filter tags decode
-                    //toc             : false,
-                    tocm: true,    // Using [TOCM]
-                    emoji: true,
-                    taskList: true,
-                    tex: true,  // 默认不解析
-                    flowChart: true,  // 默认不解析
-                    sequenceDiagram: true,  // 默认不解析
-                    path: '/static/lib/'
-                });
-                __animate();
+            $('#loading').fadeIn(300);
+            $('#article-content').html("");
+            $.ajax({url:path,
+                success: function (markdown) {
+                    try {
+                        testEditormdView = editormd.markdownToHTML("article-content", {
+                            markdown: markdown,//+ "\r\n" + $("#append-test").text(),
+                           // htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                            htmlDecode: "style,script,iframe",  // you can filter tags decode
+                            //toc             : false,
+                            tocm: true,    // Using [TOCM]
+                            emoji: true,
+                            taskList: true,
+                            tex: true,  // 默认不解析
+                            flowChart: true,  // 默认不解析
+                            sequenceDiagram: true,  // 默认不解析
+                            path: '/static/lib/'
+                        });
+                    }finally {
+                        $('#loading').fadeOut(300);
+                        __animate();
+                    }
+                },
+                async:  true,
+                cache: false,
             });
-        });
-        e.onclick = __animate
+        }());
     }
 
     function click_reader_nav_tab(e) {

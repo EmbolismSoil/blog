@@ -96,7 +96,7 @@
                                 <h5 style="display: block">我的分类：</h5>
                                 <ul style="list-style: none; display: block">
                                     {% for c in user.categories %}
-                                        <li class="fa fa-book" href="#">&nbsp;{{ c.name }}</li>
+                                        <li class="fa fa-book" onclick="onClickCategory(this)">&nbsp;{{ c.name }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -167,6 +167,13 @@
             $(children[cnt].firstElementChild).removeClass('active');
         }
         $(e.firstElementChild).addClass('active');
+
+        var opt = $(e).children('a').html();
+        if (opt == "热门文章"){
+            $('.article-list').load('post-preview?offset=0&count=10&order=views');
+        }else if (opt == "最新文章"){
+            $('.article-list').load('post-preview?offset=0&count=10&order=time');
+        }
     }
 
     function FrameManager(last, lastL) {
@@ -258,6 +265,15 @@
                 }
             });
         }());
+    }
+
+    function onClickCategory(e) {
+        $('#loading').fadeIn(300);
+        var category = $(e).html().split(';')[1];
+        var url = 'post-preview?offset=0&count=10&category=' + category;
+        $('.article-list').load(url, function () {
+            $('#loading').fadeOut(300);
+        });
     }
 
     function click_reader_nav_tab(e) {

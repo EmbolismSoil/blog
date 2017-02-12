@@ -11,6 +11,8 @@ from ..models import Category
 from flask import url_for, redirect
 from datetime import datetime
 from markdown import markdown
+from operator import attrgetter
+import re
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -36,13 +38,28 @@ def index():
 def get_post_preview():
     offset = request.args.get('offset')
     count = request.args.get('count')
-    category = request.args.get('category')
-    if category is None:
-        articles = Article.query.order_by(Article.time.desc()).offset(offset).limit(count).all()
+    qurey_str = request.query_string.decode('utf-8')
+    c = re.match(r".*&category=(.*)", qurey_str)
+    order = request.args.get('order')
+
+    if c is None:
+        articles = Article.query
     else:
-        articles = Article.query.filter_by(name=category).order_by(Article.time.desc()).offset(offset).limit(count).all()
+        category_name = c.group(1)
+        category_id = Category.query.filter_by(name=category_name).first()
+        if category_id is None:
+            return make_response()
+
+        category_id = category_id.id
+        articles = Article.query.filter_by(category_id=category_id)
+
+    if order == "views":
+        articles = articles.order_by(Article.views.desc()).offset(offset).limit(count).all()
+    else:
+        articles = articles.order_by(Article.time.desc()).offset(offset).limit(count).all()
 
     now = datetime.utcnow()
+    articles_array = []
     for article in articles:
         article.html_path = article.path
         if round((now - article.time).days) > 0:
@@ -53,8 +70,9 @@ def get_post_preview():
             article.time_diff = str(round((now - article.time).seconds / 60)) + ' 分钟前'
         else:
             article.time_diff = str(round((now - article.time).seconds)) + ' 秒之前'
+        articles_array.append(article)
 
-    return render_template('article-list.html', articles=articles)
+    return render_template('article-list.html', articles=articles_array)
 
 
 @main.route('/view/article')

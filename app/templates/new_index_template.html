@@ -7,6 +7,7 @@
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/Previewer.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <link href="/static/css/Leek_Blog.css" rel="stylesheet">
     <link href="/static/css/editormd_css.css" rel="stylesheet">
@@ -23,7 +24,6 @@
     <script src="/static/js/flowchart.min.js"></script>
     <script src="/static/js/jquery.flowchart.min.js"></script>
     <script src="/static/js/editormd.js"></script>
-
     <style>
 
     </style>
@@ -161,6 +161,8 @@
         css : "/static/css/katex.min"
     };
 
+    var previewer = new Previewer('.article-list');
+
     var click_nav_tab = function (e) {
         var children = $(e).parent().children();
         for (var cnt = 0; cnt < children.length; ++cnt) {
@@ -169,12 +171,14 @@
         $(e.firstElementChild).addClass('active');
 
         var opt = $(e).children('a').html();
+
         if (opt == "热门文章"){
-            $('.article-list').load('post-preview?offset=0&count=10&order=views');
+            previewer.setOrder('views');
         }else if (opt == "最新文章"){
-            $('.article-list').load('post-preview?offset=0&count=10&order=time');
+            previewer.setOrder('time');
         }
-    }
+        previewer.getPreviewList();
+    };
 
     function FrameManager(last, lastL) {
         this.last = last;
@@ -211,68 +215,19 @@
     document.getElementById('aside2-1').style.zIndex = 2;
     var initL = $('.nav-pills  li  a.active').parent('li').get(0);
     var frameManager = new FrameManager('aside2-1', initL);
+
     function click_nav_left_in(l, e) {
         frameManager.splice(l, e);
     }
 
-    $.get('post-preview?offset=0&count=10', function (data) {
-        $('.article-list').append(data);
-    })
-
-    function clickPreview(path, e) {
-        //path = '/app/view/article?path=' + path;
-        function __animate() {
-                var w = $('.aside1').get(0).offsetWidth;
-                $('.article-reader').animate({left: 0});
-        }
-
-        $(function () {
-            $('#loading').fadeIn(300);
-            $('#article-content').html("");
-            $.ajax({url:path,
-                success: function (markdown) {
-                    try {
-                        testEditormdView = editormd.markdownToHTML("article-content", {
-                            markdown: markdown,//+ "\r\n" + $("#append-test").text(),
-                           // htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
-                            htmlDecode: "style,script,iframe",  // you can filter tags decode
-                            //toc             : false,
-                            tocm: true,    // Using [TOCM]
-                            emoji: true,
-                            taskList: true,
-                            tex: true,  // 默认不解析
-                            flowChart: true,  // 默认不解析
-                            sequenceDiagram: true,  // 默认不解析
-                            path: '/static/lib/'
-                        });
-                    }catch (e){
-
-                    }finally {
-                        $('#loading').fadeOut(300);
-                        __animate();
-                    }
-                },
-                async:  true,
-                cache: false,
-                complete: function () {
-                    var title = $(e).attr('data-title');
-                    $.get("update-reading-counter?title=" + title);
-                    var footer = $(e).children('.article-footer').children('span').html()
-                    var tags = footer.split("·");
-                    var views = parseInt($(e).attr('data-views')) + 1;
-                    $(e).attr('data-views', views);
-                    $(e).children('.article-footer').children('span').html("阅读&nbsp;" + views +                             "&nbsp;"+ "·" + tags[1] + "·" + tags[2]);
-                }
-            });
-        }());
-    }
+    previewer.getPreviewList(0, 10);
 
     function onClickCategory(e) {
         $('#loading').fadeIn(300);
         var category = $(e).html().split(';')[1];
-        var url = 'post-preview?offset=0&count=10&category=' + category;
-        $('.article-list').load(url, function () {
-            $('#loading').fadeOut(300);
+        previewer.setCurrentCategory(category);
+        previewer.getPreviewList(0, 10, function () {
+             $('#loading').fadeOut(300);
         });
     }
 

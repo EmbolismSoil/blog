@@ -1,5 +1,5 @@
 {% for article in articles %}
-<div class="article" onclick="clickPreview('{{article.html_path}}', this)" data-title="{{article.title}}" data-views="{{article.views}}">
+<div class="article" data-path="{{article.html_path}}" data-title="{{article.title}}" data-views="{{article.views}}">
     <p class="article-shared-time">{{article.time_diff}}</p>
     <div class="article-title">
         <p>{{article.title}}</p>

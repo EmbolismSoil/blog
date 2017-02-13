@@ -11,8 +11,6 @@ from ..models import Category
 from flask import url_for, redirect
 from datetime import datetime
 from markdown import markdown
-from operator import attrgetter
-import re
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -38,14 +36,12 @@ def index():
 def get_post_preview():
     offset = request.args.get('offset')
     count = request.args.get('count')
-    qurey_str = request.query_string.decode('utf-8')
-    c = re.match(r".*&category=(.*)", qurey_str)
+    category_name = request.args.get('category')
     order = request.args.get('order')
 
-    if c is None:
+    if category_name is None:
         articles = Article.query
     else:
-        category_name = c.group(1)
         category_id = Category.query.filter_by(name=category_name).first()
         if category_id is None:
             return make_response()
@@ -159,7 +155,6 @@ def add_category():
 
 
 @main.route('/update-reading-counter', methods=['GET'])
-@login_required
 def update_reading_counter():
     title = request.args.get("title")
     article = Article.query.filter_by(title=title).first()

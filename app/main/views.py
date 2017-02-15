@@ -81,7 +81,7 @@ def view_article():
 
 @main.route('/editor')
 def editor():
-    return render_template('editor.html');
+    return render_template('editor.html')
 
 
 @main.route('/test/')

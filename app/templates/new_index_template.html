@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/Previewer.js"></script>
+    <script src="/static/js/FramerManager.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <link href="/static/css/Leek_Blog.css" rel="stylesheet">
     <link href="/static/css/editormd_css.css" rel="stylesheet">
@@ -179,38 +180,6 @@
         }
         previewer.getPreviewList();
     };
-
-    function FrameManager(last, lastL) {
-        this.last = last;
-        this.lastL = lastL;
-
-        this.splice = function (l, now) {
-            if (this.last == now) {
-                return;
-            }
-
-            var eNow = document.getElementById(now);
-            var eLast = document.getElementById(this.last);
-            var This = this;
-            eNow.style.zIndex = 1;
-
-            $(l.firstElementChild).addClass('active');
-            if (this.lastL) {
-                $(this.lastL.firstElementChild).removeClass('active');
-            }
-
-            var cb = function () {
-                eNow.style.zIndex = 2;
-                eLast.style.zIndex = 0;
-                eLast.style.left = 0;
-                This.last = now;
-                This.lastL = l;
-            };
-
-            $(eLast).animate({left: '-100%'}, 500, cb);
-        }
-
-    }
 
     document.getElementById('aside2-1').style.zIndex = 2;
     var initL = $('.nav-pills  li  a.active').parent('li').get(0);

@@ -87,7 +87,6 @@ body {
 
 .user {
     margin-top: 15%;
-
 }
 
 .user > .basic-info >a{
@@ -335,3 +334,4 @@ a.fa-container{
     height: 100%;
     z-index: 1024;
 }
+

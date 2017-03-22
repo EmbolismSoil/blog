@@ -58,6 +58,8 @@ def get_post_preview():
     articles_array = []
     for article in articles:
         article.html_path = article.path
+        article.id = round(article.time.timestamp())
+
         if round((now - article.time).days) > 0:
             article.time_diff = str(round((now - article.time).days)) + ' 天之前'
         elif round((now - article.time).seconds / 3600) > 0:
@@ -133,6 +135,21 @@ def add_article():
             flash('Upload successfully')
 
     return render_template('add-article.html', form=form)
+
+
+@main.route('/do-like', methods=['POST', 'GET'])
+def do_like():
+    title = request.args.get('title')
+    article = Article.query.filter_by(title=title).first()
+    if article is not None:
+        article.likes += 1
+        try:
+            db.session.add(article)
+            db.session.commit()
+        except:
+            db.session.rollback()
+
+    return make_response(str(article.likes))
 
 
 @main.route('/add-category', methods=['POST', 'GET'])

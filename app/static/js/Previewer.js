@@ -7,9 +7,18 @@ function Previewer(view_selector, category, order) {
     this.view = view_selector;
 }
 
+
 (function () {
     function clickPreview(path, e) {
         //path = '/app/view/article?path=' + path;
+        var title = $(e).attr('data-title');
+
+        if (title in localStorage){
+            $('#like-icon').attr('class', 'fa fa-heart');
+        }else{
+            $('#like-icon').attr('class', 'fa fa-heart-o');
+        }
+
         function __animate() {
                 var w = $('.aside1').get(0).offsetWidth;
                 $('.article-reader').animate({left: 0});
@@ -50,7 +59,11 @@ function Previewer(view_selector, category, order) {
                     var tags = footer.split("·");
                     var views = parseInt($(e).attr('data-views')) + 1;
                     $(e).attr('data-views', views);
-                    $(e).children('.article-footer').children('span').html("阅读&nbsp;" + views +                             "&nbsp;"+ "·" + tags[1] + "·" + tags[2]);
+                    $(e).children('.article-footer').children('span').html("阅读&nbsp;" + views + "&nbsp;"+ "·" + tags[1] + "·" + tags[2]);
+
+                    $('.btn-like').attr('data-title', title);
+                    $('.btn-like').attr('data-current-id', $(e).attr('id'));
+                    $('.btn-like > .like-counter > div').html($(e).attr('data-likes'));
                 }
             });
         }());

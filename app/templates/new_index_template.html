@@ -26,6 +26,107 @@
     <script src="/static/js/jquery.flowchart.min.js"></script>
     <script src="/static/js/editormd.js"></script>
     <style>
+        .btn-like{
+            cursor: pointer;
+            border: 1px solid #46b8da;
+            padding: 13px 0px 13px 0px;
+            border-radius: 40px;
+            font-size: 0px;
+            display: inline-block;
+        }
+
+        .btn-like:hover{
+            background-color: rgba(70, 184, 218, 0.1)
+        }
+
+        .heart-wrap{
+            font-size: 17px;
+            color: #46b8da;
+            display: inline-block;
+            padding-left: 30px;
+            padding-right: 15px;
+            border: 0px;
+            margin: 0px;
+        }
+
+        .like-counter{
+            display: inline-block;
+            font-size: 17px;
+            padding-left: 17px;
+            padding-right: 30px;
+            color: #46b8da;
+            border-left: 1px solid #46b8da;
+        }
+
+        .like-counter > div{
+
+        }
+
+        .heart-wrap > i{
+            margin-right: 5px;
+            margin-top: 0px;
+            padding: 0px;
+            font-size: inherit;
+            color: inherit;
+            display: inline-block;
+        }
+
+        .viewer-footer{
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px dashed #46b8da;
+        }
+
+        a.comment-avatar > img{
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid #46b8da;
+        }
+
+        a.comment-avatar{
+            display: inline-block;
+            position: absolute;
+            left: -48px;
+        }
+
+        .comment-editor{
+            padding-top: 30px;
+            margin-left: 48px;
+            position: relative;
+        }
+
+        .comment-editor > textarea {
+          padding: 10px 15px;
+          width: 100%;
+          height: 80px;
+          font-size: 13px;
+          border: 1px solid #dcdcdc;
+          border-radius: 4px;
+          background-color: rgba(180,180,180,0.1);
+          resize: none;
+          display: inline-block;
+            outline-style:none;
+        }
+
+        .editor-button-group > .btn{
+            float: right;
+            font-size: 16px;
+            margin: 0px 2px 0px 2px;
+        }
+
+        .on-comment-submit{
+            position: fixed;
+            font-size: 13px;
+            color: #08D645;
+            padding: 10px 120px 10px 120px;
+            left: 40%;
+            top: 0px;
+            background-color: white;
+            border: 1px solid #08D645;
+            opacity: 0.0;
+            border-radius: 3px;
+        }
 
     </style>
 </head>
@@ -150,6 +251,39 @@
             <div id="article-content">
 
             </div>
+
+            <div class="viewer-footer">
+                <div class="btn-like" onclick="onDoLike(this)">
+                    <div class="heart-wrap">
+                        <i id="like-icon" class="fa fa-heart-o"></i>喜欢
+                    </div>
+                    <div class="like-counter">
+                        <div>270</div>
+                    </div>
+                </div>
+
+                <div class="comment-editor">
+                    <a class="comment-avatar">
+                        <img src="/static/img/avatar.jpg">
+                    </a>
+                    <textarea placeholder="留下你的评论..."></textarea>
+                    <div class="editor-button-group">
+                        <a type="button" class="btn btn-success" onclick="comment_submit(this)">评论</a>
+                        <a type="button" class="btn btn-info">取消</a>
+                    </div>
+                </div>
+
+                <div class="on-comment-submit">
+                    评论成功
+                </div>
+
+                <div class="comment-list">
+
+                </div>
+            </div>
+
+
+
         </div>
         </div>
     </div>
@@ -204,5 +338,55 @@
         $('.article-reader').animate({left: '100%'});
     }
 
+    function onDoLike(e) {
+        var title = $(e).attr('data-title');
+        var id = $(e).attr('data-current-id');
+        var url = 'do-like?title=' +  title;
+
+        if (title in localStorage){
+            return;
+        }
+
+        $.get(url, function (ret) {
+            $('.like-counter > div').html(ret);
+            $('#like-icon').attr('class', 'fa fa-heart');
+            localStorage[title] = true;
+            var e = $('#'+ id);
+            var footer = $(e).children('.article-footer').children('span').html()
+            var tags = footer.split("·");
+            var likes = parseInt($(e).attr('data-likes')) + 1;
+            $(e).attr('data-likes', likes);
+            $(e).children('.article-footer').children('span').html(tags[0] + "·" + tags[1] + "·" + "喜欢 " + likes);
+        });
+    }
+
+
+    function comment_submit(e) {
+        function __doAnimate(content) {
+            $('.on-comment-submit').html(content);
+
+            $('.on-comment-submit').animate({opacity: 1.0}, function () {
+                setTimeout(function () {
+                $('.on-comment-submit').animate({opacity: 0.0});
+            }, 1000);
+        });
+        }
+
+        if (!$('.comment-editor > textarea').val()){
+            __doAnimate('评论不能为空');
+        }else{
+            __doAnimate('评论成功');
+            $('.comment-editor > textarea').val('');
+        }
+    }
+
+    $(function () {
+        var w = $(window).width();
+        var ew = 294;
+        var left = (1 - 294 / w) / 2;
+        var left_str = left * 100 + "%";
+
+        $('.on-comment-submit').css('left', left_str);
+    }())
 </script>
 </html>

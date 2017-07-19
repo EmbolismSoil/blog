@@ -11,7 +11,7 @@ function Previewer(view_selector, category, order) {
     function clickPreview(path, e) {
         //path = '/app/view/article?path=' + path;
         function __animate() {
-                var w = $('.aside1').get(0).offsetWidth;
+                //var w = $('.aside1').get(0).offsetWidth;
                 $('.article-reader').animate({left: 0});
         }
 

@@ -29,6 +29,7 @@ def index():
         user.comment_count += article.comments
         user.like_count += article.likes
 
+    user.github_link = 'https://github.com/EmbolismSoil'
     return render_template('new_index_template.html', user=user)
 
 
@@ -118,9 +119,9 @@ def add_article():
         db.session.add(article)
         try:
             db.session.commit()
-        except:
+        except Exception as e:
             db.session.rollback()
-            flash('Upload failed')
+            flash('Upload failed : %s' % str(e))
         else:
             file.save(path)
             file = open(path, 'r')

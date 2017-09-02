@@ -167,3 +167,5 @@ def update_reading_counter():
             db.session.rollback()
 
     return make_response()
+
+

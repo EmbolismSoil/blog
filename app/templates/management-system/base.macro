@@ -1,0 +1,14 @@
+{% macro active(id) -%}
+    $('#' + '{{ id }}').addClass('active');
+{%- endmacro %}
+
+{% macro article_entry(title, category, comment_count, date) -%}
+    <tr>
+        <td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>
+        <td class="article-title">{{ title }}</td>
+        <td>{{ category }}</td>
+        <td class="hidden-sm">{{ comment_count }}</td>
+        <td>{{ date }}</td>
+        <td><a href="update-article.html">修改</a> <a rel="6">删除</a></td>
+    </tr>
+{%- endmacro %}

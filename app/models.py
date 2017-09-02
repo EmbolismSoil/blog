@@ -1,9 +1,9 @@
 from . import db
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin, login_manager
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from datetime import datetime
-
+import types
 
 class Permission:
     FOLLOW = 0x01
@@ -76,6 +76,11 @@ class User(UserMixin, db.Model):
 
     articles = db.relationship('Article', backref='user', lazy='dynamic')
     categories = db.relationship('Category', backref='user', lazy='dynamic')
+    login_records = db.relationship('LoginRecord', backref='user', lazy='dynamic')
+
+    @property
+    def succeed_login_records(self):
+        return list(filter(lambda r: r.status != 0, self.login_records))
 
     # 使用属性装饰器的方式实现属性的只读
     @property
@@ -91,6 +96,45 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+    @property
+    def last_ip(self):
+        return '0.0.0.0' if self.login_count <= 1 else self.succeed_login_records[1].ip
+
+    @property
+    def last_login(self):
+        return datetime.utcnow() if self.login_count <= 1 else self.succeed_login_records[1].time
+
+    @property
+    def login_count(self):
+        return len(self.succeed_login_records)
+
+    @property
+    def login_records_reversed(self):
+        return self.login_records[:-10:-1]
+
+
+class LoginRecord(db.Model):
+    __tablename__ = 'login_record'
+    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    time = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
+    ip = db.Column(db.String(128), default='0.0.0.0', nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    status = db.Column(db.Integer, nullable=False, default=0)
+
+    @property
+    def status_str(self):
+        return '成功' if self.status else '失败'
+
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
 
 
 class Article(db.Model):

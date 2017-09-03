@@ -1,6 +1,6 @@
 #
 from flask import render_template, request, flash, make_response
-from . import main
+from . import main, root
 from ..models import Article
 from .forms import ArticleForm, CategoryForm
 from flask_login import login_required
@@ -11,6 +11,10 @@ from ..models import Category
 from flask import url_for, redirect
 from datetime import datetime
 from markdown import markdown
+
+@root.route('/', methods=['GET', 'POST'])
+def root_index():
+    return redirect('/app/')
 
 
 @main.route('/', methods=['GET', 'POST'])

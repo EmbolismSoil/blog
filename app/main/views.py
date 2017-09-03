@@ -146,9 +146,9 @@ def add_category():
         db.session.add(category)
         try:
             db.session.commit()
-        except:
+        except Exception as e:
             db.session.rollback()
-            flash('Add category failed')
+            flash('Add category failed: %s' % str(e))
         else:
             flash('Add category successfully')
 

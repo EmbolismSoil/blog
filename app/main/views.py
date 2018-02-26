@@ -1,4 +1,3 @@
-#
 from flask import render_template, request, flash, make_response
 from . import main, root
 from ..models import Article

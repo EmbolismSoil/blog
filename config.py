@@ -25,9 +25,8 @@ class DevelopmentConfig(Config):
     MAIL_USE_SSL = False
     MAIL_USERNAME = os.environ.get('FLASK_MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('FLASK_MAIL_PASSWORD')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-                                'mysql://blogDB:lee@localhost/blogDB'
-
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
+                               
 
 class TestingConfig(Config):
     TESTING = True

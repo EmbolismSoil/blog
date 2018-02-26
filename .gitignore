@@ -5,4 +5,4 @@ __pycache__/
 .vscode/
 config.py
 app/static/markdown/
-blog/
+log/

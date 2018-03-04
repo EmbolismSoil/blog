@@ -18,7 +18,7 @@ def root_index():
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    user = User.query.filter_by(username='LEEK').first()
+    user = User.query.filter_by(username='ConleyLee').first()
     user.article_count = user.articles.count()
     user.comment_count = 0
     user.category_count = user.categories.count()

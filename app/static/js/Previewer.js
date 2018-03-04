@@ -16,7 +16,8 @@ function Previewer(view_selector, category, order) {
         }
 
         $(function () {
-            $('#loading').fadeIn(300);
+            //$('#loading').fadeIn(300);
+            $('#loading').css('display', 'block');
             $('#article-content').html("");
             $.ajax({url:path,
                 success: function (markdown) {
@@ -37,7 +38,8 @@ function Previewer(view_selector, category, order) {
                     }catch (e){
 
                     }finally {
-                        $('#loading').fadeOut(300);
+            		$('#loading').css('display', 'none');
+                        //$('#loading').fadeOut(300);
                         __animate();
                     }
                 },

@@ -165,7 +165,7 @@
         emoji                : false,          // :emoji: , Support Github emoji, Twitter Emoji (Twemoji);
                                                // Support FontAwesome icon emoji :fa-xxx: > Using fontAwesome icon web fonts;
                                                // Support Editor.md logo icon emoji :editormd-logo: :editormd-logo-1x: > 1~8x;
-        tex                  : false,          // TeX(LaTeX), based on KaTeX
+        tex                  : true,          // TeX(LaTeX), based on KaTeX
         flowChart            : false,          // flowChart.js only support IE9+
         sequenceDiagram      : false,          // sequenceDiagram.js only support IE9+
         previewCodeHighlight : true,
@@ -4017,8 +4017,18 @@
             var katexHandle = function() {
                 div.find("." + editormd.classNames.tex).each(function(){
                     var tex  = $(this);
-                    katex.render(tex.html().replace(/&lt;/g, "<").replace(/&gt;/g, ">"), tex[0]);
-                    tex.find(".katex").css("font-size", "1.6em");
+                    const tm = texmath.use(katex);
+                    let md = markdownit().use(tm,{delimiters:'dollars',macros:{"\\RR": "\\mathbb{R}"}});
+                    //out.innerHTML = md.render('Euler\'s identity $e^{i\pi}+1=0$ is a beautiful formula in //RR 2.');
+                    //alert(tex.html())
+                    var src = text.html();
+                    if (tex.is('span')){
+                        src = '$' + src + '$'
+                    }
+                    var mds = md.render(src);
+                    //var mds = md.render(tex.html().replace(/&lt;/g, "<").replace(/&gt;/g, ">"));
+                    //katex.render(tex.html().replace(/&lt;/g, "<").replace(/&gt;/g, ">"), tex[0]);
+                    tex.find(".katex").css("font-size", "1.6em").html(mds)
                 });
             };
 

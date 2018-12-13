@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <title>ConleyLee</title>
 
+    <link href="https://cdn.bootcss.com/KaTeX/0.10.0-rc/katex.min.css" rel="stylesheet">
+    <link href="https://gitcdn.xyz/cdn/goessner/markdown-it-texmath/master/texmath.css" rel="stylesheet">
+    
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon">  
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
@@ -27,6 +30,11 @@
     <script src="/static/js/flowchart.min.js"></script>
     <script src="/static/js/jquery.flowchart.min.js"></script>
     <script src="/static/js/editormd.js"></script>
+
+    <script src="https://cdn.bootcss.com/markdown-it/8.4.2/markdown-it.js"></script>
+    <script src="https://cdn.bootcss.com/KaTeX/0.10.0-rc/katex.min.js"></script>
+    <script src="https://gitcdn.xyz/cdn/goessner/markdown-it-texmath/master/texmath.js"></script>
+
     <style>
 
     </style>
@@ -115,7 +123,7 @@
                 </li>
             </ul>
 
-            <div id="article-content">
+            <div id="article-content" style="position:relative">
 
             </div>
         </div>
@@ -125,11 +133,6 @@
 </body>
 
 <script>
-    editormd.katexURL = {
-        js  : "/static/js/katex.min",
-        css : "/static/css/katex.min"
-    };
-
     var previewer = new Previewer('.article-list');
 
     var click_nav_tab = function (e) {

@@ -16,27 +16,10 @@
 <script type="text/javascript">
     $(function () {
         $.get("{{path}}", function (markdown) {
-            testEditormdView = editormd.markdownToHTML("test-editormd-view", {
-                markdown: markdown,//+ "\r\n" + $("#append-test").text(),
-                //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
-                htmlDecode: "style,script,iframe",  // you can filter tags decode
-                //toc             : false,
-                tocm: true,    // Using [TOCM]
-                emoji: true,
-                taskList: true,
-                tex: true,  // 默认不解析
-                flowChart: true,  // 默认不解析
-                sequenceDiagram: true,  // 默认不解析
-            });
-        });
-
-        testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
-            htmlDecode: "style,script,iframe",  // you can filter tags decode
-            emoji: true,
-            taskList: true,
-            tex: true,  // 默认不解析
-            flowChart: true,  // 默认不解析
-            sequenceDiagram: true,  // 默认不解析
+            let md;
+            const tm = texmath.use(katex);
+            md = markdownit().use(tm,{delimiters:'dollars',macros:{"\\RR": "\\mathbb{R}"}});
+            $('#test-editormd-view').html(md.render(markdown));
         });
     });
 </script>

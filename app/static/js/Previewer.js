@@ -22,23 +22,13 @@ function Previewer(view_selector, category, order) {
             $.ajax({url:path,
                 success: function (markdown) {
                     try {
-                        testEditormdView = editormd.markdownToHTML("article-content", {
-                            markdown: markdown,//+ "\r\n" + $("#append-test").text(),
-                           // htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
-                            htmlDecode: "style,script,iframe",  // you can filter tags decode
-                            //toc             : false,
-                            tocm: true,    // Using [TOCM]
-                            emoji: true,
-                            taskList: true,
-                            tex: true,  // 默认不解析
-                            flowChart: true,  // 默认不解析
-                            sequenceDiagram: true,  // 默认不解析
-                            path: '/static/lib/'
-                        });
+                        const tm = texmath.use(katex);
+                        let md = markdownit().use(tm,{delimiters:'dollars',macros:{"\\RR": "\\mathbb{R}"}});
+                        var h = md.render(markdown);
+                        $('#article-content').html(h);
                     }catch (e){
-
                     }finally {
-            		$('#loading').css('display', 'none');
+            		    $('#loading').css('display', 'none');
                         //$('#loading').fadeOut(300);
                         __animate();
                     }
